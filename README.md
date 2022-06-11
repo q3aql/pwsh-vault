@@ -15,6 +15,7 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
 
   ```shell
   $ git clone https://github.com/q3aql/pwsh-vault.git
+  $ cd pwsh-vault
   $ sudo make install clean
   ````
 
