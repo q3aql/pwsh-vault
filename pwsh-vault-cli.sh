@@ -256,6 +256,7 @@ function create_login_vault_entry() {
   echo "# OTP: ${name_otp}"
   echo ""
   echo -n "# Press enter key to continue " ; read enter_continue
+  create_entries_menu
 }
 
 function create_bcard_vault_entry() {
@@ -333,6 +334,7 @@ function create_bcard_vault_entry() {
   echo "# CVV: ${name_cvv}"
   echo ""
   echo -n "# Press enter key to continue " ; read enter_continue
+  create_entries_menu
 }
 
 function create_note_vault_entry() {
@@ -371,6 +373,7 @@ function create_note_vault_entry() {
   echo "# Note: ${name_note}"
   echo ""
   echo -n "# Press enter key to continue " ; read enter_continue
+  create_entries_menu
 }
 
 function create_entries_menu() {

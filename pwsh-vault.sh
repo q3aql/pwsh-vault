@@ -298,6 +298,7 @@ function create_login_vault_entry() {
     fi
   done
   echo > /dev/null | pwsh-vaultm -p "爵  LOGIN ENTRY CREATED: ${name_entry} $(generate_spaces 60)"
+  create_entries_menu
 }
 
 function create_bcard_vault_entry() {
@@ -357,6 +358,7 @@ function create_bcard_vault_entry() {
     fi
   done
   echo > /dev/null | pwsh-vaultm -p "  CARD ENTRY CREATED: ${name_entry} $(generate_spaces 60)"
+  create_entries_menu
 }
 
 function create_note_vault_entry() {
@@ -383,6 +385,7 @@ function create_note_vault_entry() {
     fi
   done
   echo > /dev/null | pwsh-vaultm -p "  NOTE ENTRY CREATED: ${name_entry} $(generate_spaces 60)"
+  create_entries_menu
 }
 
 function create_entries_menu_show() {
