@@ -14,7 +14,7 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
 * Open terminal and run the following commands:
 
   ```shell
-  $ git clone http://vmi826324.contaboserver.net:3000/q3aql/pwsh-vault
+  $ git clone https://github.com/q3aql/pwsh-vault.git
   $ sudo make install clean
   ````
 
