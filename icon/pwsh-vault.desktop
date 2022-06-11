@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=pwsh-vault
+GenericName=pwsh-vault
+Comment=Basic Password Manager written in Bash+Dmenu
+Comment[es]=Gestor de claves basico escrito en Bash+Dmenu
+Exec=/usr/bin/pwsh-vault
+Terminal=false
+Icon=/var/lib/pwsh-vault/icon/pwsh-vault.png
+Type=Application
+Categories=GTK;Utility;TerminalEmulator;System;
+
