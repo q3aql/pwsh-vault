@@ -1042,9 +1042,13 @@ function remove_entry_vault() {
       if [ "${are_you_sure}" == "Yes" ] ; then
         rm -rf "${pwsh_vault}/${vault_remove_entry}"
         echo > /dev/null | pwsh-vaultm -p "  Entry ${vault_remove_entry} Removed $(generate_spaces 55)"
+        remove_entry_vault
+      else
+        remove_entry_vault
       fi
     else
       echo > /dev/null | pwsh-vaultm -p "  Entry ${vault_remove_entry} does no exist $(generate_spaces 55)"
+      remove_entry_vault
     fi
   fi
 }

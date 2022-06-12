@@ -851,7 +851,7 @@ function remove_entry_vault() {
   if [ ${count_total} -ne 0 ] ; then
     echo ""
   fi
-  echo -n "# Type entry to remove (Default: return): " ; read vault_remove_entry
+  echo -n "# Type entry to remove (Default: Return): " ; read vault_remove_entry
   if [ -z "${vault_remove_entry}" ] ; then
     echo "# Canceled Remove Entry"
   else
@@ -865,12 +865,16 @@ function remove_entry_vault() {
         echo "# Entry ${vault_remove_entry} Removed"
         echo ""
         echo -n "# Press enter key to continue " ; read enter_continue
+        remove_entry_vault
+      else
+        remove_entry_vault
       fi
     else
       echo ""
       echo "# Entry ${vault_remove_entry} does no exist"
       echo ""
       echo -n "# Press enter key to continue " ; read enter_continue
+      remove_entry_vault
     fi
   fi
 }
