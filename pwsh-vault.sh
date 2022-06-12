@@ -5,7 +5,7 @@
 # Author: q3aql                                           #
 # Contact: q3aql@duck.com                                 #
 # License: GPL v2.0                                       #
-# Last-Change: 11-06-20222                                #
+# Last-Change: 12-06-20222                                #
 # #########################################################
 VERSION="0.1"
 
@@ -1163,8 +1163,10 @@ function edit_entry_vault() {
         fi
       fi
       echo > /dev/null | pwsh-vaultm -p "  ENTRY EDITED: ${vault_edit_entry} $(generate_spaces 60)"
+      edit_entry_vault
     else
       echo "# Entry ${vault_edit_entry} does no exist"
+      edit_entry_vault
     fi
   fi
 }
@@ -1277,6 +1279,7 @@ function search_result_show_note() {
   if [ ${corrupted_result} -eq 0 ] ; then
     note_decrypt=$(cat notes/${result}/note | tail -1 | cut -d ";" -f 2)
     note_decrypt=$(vault_key_decrypt "${note_decrypt}")
+    note_decrypt=$(restoreSpaces "${note_decrypt}")
     echo >> ${pwsh_vault_clipboard_copy}
     echo "* Name Entry: notes/${result}" >> ${pwsh_vault_clipboard_copy}
     echo "* Note: ${note_decrypt}" >> ${pwsh_vault_clipboard_copy}

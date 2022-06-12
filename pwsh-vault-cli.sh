@@ -907,7 +907,7 @@ function edit_entry_vault() {
   if [ ${count_total} -ne 0 ] ; then
     echo ""
   fi
-  echo -n "# Type entry to edit (Default: return): " ; read vault_edit_entry
+  echo -n "# Type entry to edit (Default: Return): " ; read vault_edit_entry
   if [ -z "${vault_edit_entry}" ] ; then
     echo "# Canceled Edit Entry"
   else
@@ -1022,11 +1022,13 @@ function edit_entry_vault() {
       echo "# ENTRY ${vault_edit_entry} EDITED"
       echo ""
       echo -n "# Press enter key to continue " ; read enter_continue
+      edit_entry_vault
     else
       echo ""
       echo "# Entry ${vault_edit_entry} does no exist"
       echo ""
       echo -n "# Press enter key to continue " ; read enter_continue
+      edit_entry_vault
     fi
   fi
 }
