@@ -561,270 +561,221 @@ function pwsh_vault_help() {
     exit
 }
 
+function size_extracted_vault_logins() {
+  param_s="${1}"
+  name_length=1
+  name_count=1
+  if [ -z "${param_s}" ] ; then
+    ls -1 ${pwsh_vault}/logins | while read entry ; do
+      name_count=$(echo "logins/${entry}" | wc -m)
+      # Compare the maximum size of the variables
+      if [ ${name_count} -gt ${name_length} ] ; then
+        name_length=${name_count}
+        echo ${name_length}
+      fi
+    done
+  else
+    ls -1 ${pwsh_vault}/logins | grep -i "${param_s}" | while read entry ; do
+      name_count=$(echo "logins/${entry}" | wc -m)
+      # Compare the maximum size of the variables
+      if [ ${name_count} -gt ${name_length} ] ; then
+        name_length=${name_count}
+        echo ${name_length}
+      fi
+    done
+  fi
+}
+
+function size_extracted_vault_bcard() {
+  param_s="${1}"
+  name_length=1
+  name_count=1
+  if [ -z "${param_s}" ] ; then
+    ls -1 ${pwsh_vault}/bcard | while read entry ; do
+      name_count=$(echo "bcard/${entry}" | wc -m)
+      # Compare the maximum size of the variables
+      if [ ${name_count} -gt ${name_length} ] ; then
+        name_length=${name_count}
+        echo ${name_length}
+      fi
+    done
+  else
+    ls -1 ${pwsh_vault}/bcard | grep -i "${param_s}" | while read entry ; do
+      name_count=$(echo "logins/${entry}" | wc -m)
+      # Compare the maximum size of the variables
+      if [ ${name_count} -gt ${name_length} ] ; then
+        name_length=${name_count}
+        echo ${name_length}
+      fi
+    done
+  fi
+}
+
+function size_extracted_vault_notes() {
+  param_s="${1}"
+  name_length=1
+  name_count=1
+  if [ -z "${param_s}" ] ; then
+    ls -1 ${pwsh_vault}/notes | while read entry ; do
+      name_count=$(echo "notes/${entry}" | wc -m)
+      # Compare the maximum size of the variables
+      if [ ${name_count} -gt ${name_length} ] ; then
+        name_length=${name_count}
+        echo ${name_length}
+      fi
+    done
+  else
+    ls -1 ${pwsh_vault}/notes | grep -i "${param_s}" | while read entry ; do
+      name_count=$(echo "logins/${entry}" | wc -m)
+      # Compare the maximum size of the variables
+      if [ ${name_count} -gt ${name_length} ] ; then
+        name_length=${name_count}
+        echo ${name_length}
+      fi
+    done
+  fi
+}
+
 function process_extracted_vault_logins() {
-  vault_cache_length=$(cat ${pwsh_vault_cache_logins} | wc -l)
+  param="${1}"
+  if [ -z "${param}" ] ; then
+    name_length=$(size_extracted_vault_logins | tail -1)
+  else
+    name_length=$(size_extracted_vault_logins "${param}" | tail -1)
+  fi
+  login_length="11"
+  password_length="18"
+  url_length="10"
+  otp_length="10"
   count_length=1
-  # Count the width of all cells
-  name_length=9
-  login_length=5
-  password_length=8
-  url_length=3
-  otp_length=3
-  while [ ${count_length} -le ${vault_cache_length} ] ; do
-    name_count=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 1 | wc -m)
-    login_count=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 2 | wc -m)
-    password_count=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 3 | wc -m)
-    url_count=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 4 | wc -m)
-    otp_count=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 5 | wc -m)
-    # Compare the maximum size of the variables
-    if [ ${name_count} -gt ${name_length} ] ; then
-      name_length=${name_count}
-    fi
-    if [ ${login_count} -gt ${login_length} ] ; then
-      login_length=${login_count}
-    fi
-    if [ ${password_count} -gt ${password_length} ] ; then
-      password_length=${password_count}
-    fi
-    if [ ${url_count} -gt ${url_length} ] ; then
-      url_length=${url_count}
-    fi
-    if [ ${otp_count} -gt ${otp_length} ] ; then
-      otp_length=${otp_count}
-    fi
-    count_length=$(expr ${count_length} + 1)
-  done
-  count_length=1
-  row_length=$(expr ${name_length} + ${login_length} + ${password_length} + ${url_length} + ${otp_length} + 23)
+  row_length=$(expr ${name_length} + ${login_length} + ${password_length} + ${url_length} + ${otp_length} + 10)
   row_length_show=1
-  # Display data in rows
-  count_length=1
-  show_bar=0
-  while [ ${count_length} -le ${vault_cache_length} ] ; do
-    # Read the value
-    name=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 1)
-    login=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 2)
-    password=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 3)
-    url=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 4)
-    otp=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 5)
-    # Counting the letters
-    name_count=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 1 | wc -m)
-    login_count=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 2 | wc -m)
-    password_count=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 3 | wc -m)
-    url_count=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 4 | wc -m)
-    otp_count=$(cat ${pwsh_vault_cache_logins} | head -${count_length} | tail -1 | cut -d "," -f 5 | wc -m)
-    # Calculate the spaces in each row separately
-    name_count=$(expr ${name_length} - ${name_count})
-    login_count=$(expr ${login_length} - ${login_count})
-    password_count=$(expr ${password_length} - ${password_count})
-    url_count=$(expr ${url_length} - ${url_count})
-    otp_count=$(expr ${otp_length} - ${otp_count})
-    # Show each row separately
-    echo -n "  ${name}"
-    name_max=1
-    while [ ${name_max} -le ${name_count} ] ; do
-      echo -n " "
-      name_max=$(expr ${name_max} + 1)
+  if [ -z "${param}" ] ; then
+    ls -1 ${pwsh_vault}/logins | while read entry ; do
+      name="${entry}"
+      login="Hidden User"
+      password="Encrypted Password"
+      url="Hidden URL"
+      otp="Hidden OTP"
+      name_count=$(echo "logins/${entry}" | wc -m)
+      name_count=$(expr ${name_length} - ${name_count})
+      echo -n "  logins/${name}"
+      name_max=1
+      while [ ${name_max} -le ${name_count} ] ; do
+        echo -n " "
+        name_max=$(expr ${name_max} + 1)
+      done
+      echo " - 﫻  ${login} -   ${password} - 爵  ${url} - 勒  ${otp}"
     done
-    echo -n " - "
-    echo -n "﫻  ${login}"
-    login_max=1
-    while [ ${login_max} -le ${login_count} ] ; do
-      echo -n " "
-      login_max=$(expr ${login_max} + 1)
+  else
+    ls -1 ${pwsh_vault}/logins | grep -i "${param}" | while read entry ; do
+      name="${entry}"
+      login="Hidden User"
+      password="Encrypted Password"
+      url="Hidden URL"
+      otp="Hidden OTP"
+      name_count=$(echo "logins/${entry}" | wc -m)
+      name_count=$(expr ${name_length} - ${name_count})
+      echo -n "  logins/${name}"
+      name_max=1
+      while [ ${name_max} -le ${name_count} ] ; do
+        echo -n " "
+        name_max=$(expr ${name_max} + 1)
+      done
+      echo " - 﫻  ${login} -   ${password} - 爵  ${url} - 勒  ${otp}"
     done
-    echo -n " - "
-    echo -n "  ${password}"
-    password_max=1
-    while [ ${password_max} -le ${password_count} ] ; do
-      echo -n " "
-      password_max=$(expr ${password_max} + 1)
-    done
-    echo -n " - "
-    echo -n "爵  ${url}"
-    url_max=1
-    while [ ${url_max} -le ${url_count} ] ; do
-      echo -n " "
-      url_max=$(expr ${url_max} + 1)
-    done
-    echo -n " - "
-    echo -n "勒  ${otp}"
-    otp_max=1
-    while [ ${otp_max} -le ${otp_count} ] ; do
-      echo -n " "
-      otp_max=$(expr ${otp_max} + 1)
-    done
-    echo ""
-    count_length=$(expr ${count_length} + 1)
-    if [ ${show_bar} -eq 0 ] ; then
-      row_length=$(expr ${name_length} + ${login_length} + ${password_length} + ${url_length} + ${otp_length} + 23)
-      row_length_show=1
-      show_bar=1
-    fi
-  done
-  echo ""
+  fi
 }
 
 function process_extracted_vault_bcard() {
-  vault_cache_length=$(cat ${pwsh_vault_cache_bcard} | wc -l)
-  count_length=1
-  # Count the width of all cells
-  name_length=9
-  owner_length=5
-  card_length=8
-  expiry_length=3
-  cvv_length=3
-  while [ ${count_length} -le ${vault_cache_length} ] ; do
-    name_count=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 1 | wc -m)
-    owner_count=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 2 | wc -m)
-    card_count=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 3 | wc -m)
-    expiry_count=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 4 | wc -m)
-    cvv_count=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 5 | wc -m)
-    # Compare the maximum size of the variables
-    if [ ${name_count} -gt ${name_length} ] ; then
-      name_length=${name_count}
-    fi
-    if [ ${owner_count} -gt ${owner_length} ] ; then
-      owner_length=${owner_count}
-    fi
-    if [ ${card_count} -gt ${card_length} ] ; then
-      card_length=${card_count}
-    fi
-    if [ ${expiry_count} -gt ${expiry_length} ] ; then
-      expiry_length=${expiry_count}
-    fi
-    if [ ${cvv_count} -gt ${cvv_length} ] ; then
-      cvv_length=${cvv_count}
-    fi
-    count_length=$(expr ${count_length} + 1)
-  done
-  count_length=1
-  row_length=$(expr ${name_length} + ${owner_length} + ${card_length} + ${expiry_length} + ${cvv_length} + 23)
+  param="${1}"
+  if [ -z "${param}" ] ; then
+    name_length=$(size_extracted_vault_bcard | tail -1)
+  else
+    name_length=$(size_extracted_vault_bcard "${param}" | tail -1)
+  fi
+  owner_length="12"
+  card_length="11"
+  expiry_length="13"
+  cvv_length="13"
+  row_length=$(expr ${name_length} + ${owner_length} + ${card_length} + ${expiry_length} + ${cvv_length} + 10)
   row_length_show=1
-  # Display data in rows
-  count_length=1
-  show_bar=0
-  while [ ${count_length} -le ${vault_cache_length} ] ; do
-    # Read the value
-    name=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 1)
-    owner=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 2)
-    card=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 3)
-    expiry=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 4)
-    cvv=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 5)
-    # Counting the letters
-    name_count=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 1 | wc -m)
-    owner_count=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 2 | wc -m)
-    card_count=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 3 | wc -m)
-    expiry_count=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 4 | wc -m)
-    cvv_count=$(cat ${pwsh_vault_cache_bcard} | head -${count_length} | tail -1 | cut -d "," -f 5 | wc -m)
-    # Calculate the spaces in each row separately
-    name_count=$(expr ${name_length} - ${name_count})
-    owner_count=$(expr ${owner_length} - ${owner_count})
-    card_count=$(expr ${card_length} - ${card_count})
-    expiry_count=$(expr ${expiry_length} - ${expiry_count})
-    cvv_count=$(expr ${cvv_length} - ${cvv_count})
-    # Show each row separately
-    echo -n "  ${name}"
-    name_max=1
-    while [ ${name_max} -le ${name_count} ] ; do
-      echo -n " "
-      name_max=$(expr ${name_max} + 1)
+  if [ -z "${param}" ] ; then
+    ls -1 ${pwsh_vault}/bcard | while read entry ; do
+      name="${entry}"
+      owner="Hidden Owner"
+      card="Hidden Card"
+      expiry="Hidden Expiry"
+      cvv="Encrypted CVV"
+      name_count=$(echo "bcard/${entry}" | wc -m)
+      name_count=$(expr ${name_length} - ${name_count})
+      echo -n "  bcard/${name}"
+      name_max=1
+      while [ ${name_max} -le ${name_count} ] ; do
+        echo -n " "
+        name_max=$(expr ${name_max} + 1)
+      done
+      echo " -   ${owner} -   ${card} -   ${expiry} - 况  ${cvv}"
     done
-    echo -n " - "
-    echo -n "  ${owner}"
-    owner_max=1
-    while [ ${owner_max} -le ${owner_count} ] ; do
-      echo -n " "
-      owner_max=$(expr ${owner_max} + 1)
+  else
+    ls -1 ${pwsh_vault}/bcard | grep -i "${param}" | while read entry ; do
+      name="${entry}"
+      owner="Hidden Owner"
+      card="Hidden Card"
+      expiry="Hidden Expiry"
+      cvv="Encrypted CVV"
+      name_count=$(echo "bcard/${entry}" | wc -m)
+      name_count=$(expr ${name_length} - ${name_count})
+      echo -n "  bcard/${name}"
+      name_max=1
+      while [ ${name_max} -le ${name_count} ] ; do
+        echo -n " "
+        name_max=$(expr ${name_max} + 1)
+      done
+      echo " -   ${owner} -   ${card} -   ${expiry} - 况  ${cvv}"
     done
-    echo -n " - "
-    echo -n "  ${card}"
-    card_max=1
-    while [ ${card_max} -le ${card_count} ] ; do
-      echo -n " "
-      card_max=$(expr ${card_max} + 1)
-    done
-    echo -n " - "
-    echo -n "  ${expiry}"
-    expiry_max=1
-    while [ ${expiry_max} -le ${expiry_count} ] ; do
-      echo -n " "
-      expiry_max=$(expr ${expiry_max} + 1)
-    done
-    echo -n " - "
-    echo -n "况  ${cvv}"
-    cvv_max=1
-    while [ ${cvv_max} -le ${cvv_count} ] ; do
-      echo -n " "
-      cvv_max=$(expr ${cvv_max} + 1)
-    done
-    echo ""
-    count_length=$(expr ${count_length} + 1)
-    if [ ${show_bar} -eq 0 ] ; then
-      row_length=$(expr ${name_length} + ${owner_length} + ${card_length} + ${expiry_length} + ${cvv_length} + 23)
-      row_length_show=1
-      show_bar=1
-    fi
-  done
-  echo ""
+  fi
 }
 
 function process_extracted_vault_notes() {
-  vault_cache_length=$(cat ${pwsh_vault_cache_notes} | wc -l)
-  count_length=1
-  # Count the width of all cells
-  name_length=9
-  note_length=5
-  while [ ${count_length} -le ${vault_cache_length} ] ; do
-    name_count=$(cat ${pwsh_vault_cache_notes} | head -${count_length} | tail -1 | cut -d "," -f 1 | wc -m)
-    note_count=$(cat ${pwsh_vault_cache_notes} | head -${count_length} | tail -1 | cut -d "," -f 2 | wc -m)
-    if [ ${name_count} -gt ${name_length} ] ; then
-      name_length=${name_count}
-    fi
-    if [ ${note_count} -gt ${note_length} ] ; then
-      note_length=${note_count}
-    fi
-    count_length=$(expr ${count_length} + 1)
-  done
-  count_length=1
-  row_length=$(expr ${name_length} + ${note_length} + 9)
+  param="${1}"
+  if [ -z "${param}" ] ; then
+    name_length=$(size_extracted_vault_notes | tail -1)
+  else
+    name_length=$(size_extracted_vault_notes "${param}" | tail -1)
+  fi
+  note_length="14"
+  row_length=$(expr ${name_length} + ${note_length} + 4)
   row_length_show=1
-  # Display data in rows
-  count_length=1
-  show_bar=0
-  while [ ${count_length} -le ${vault_cache_length} ] ; do
-    # Read the value
-    name=$(cat ${pwsh_vault_cache_notes} | head -${count_length} | tail -1 | cut -d "," -f 1)
-    note=$(cat ${pwsh_vault_cache_notes} | head -${count_length} | tail -1 | cut -d "," -f 2)
-    # Counting the letters
-    name_count=$(cat ${pwsh_vault_cache_notes} | head -${count_length} | tail -1 | cut -d "," -f 1 | wc -m)
-    note_count=$(cat ${pwsh_vault_cache_notes} | head -${count_length} | tail -1 | cut -d "," -f 2 | wc -m)
-    # Calculate the spaces in each row separately
-    name_count=$(expr ${name_length} - ${name_count})
-    note_count=$(expr ${note_length} - ${note_count})
-    # Show each row separately
-    echo -n "  ${name}"
-    name_max=1
-    while [ ${name_max} -le ${name_count} ] ; do
-      echo -n " "
-      name_max=$(expr ${name_max} + 1)
+  if [ -z "${param}" ] ; then
+    ls -1 ${pwsh_vault}/notes | while read entry ; do
+      name="${entry}"
+      note="Encrypted Note"
+      name_count=$(echo "notes/${entry}" | wc -m)
+      name_count=$(expr ${name_length} - ${name_count})
+      echo -n "  notes/${name}"
+      name_max=1
+      while [ ${name_max} -le ${name_count} ] ; do
+        echo -n " "
+        name_max=$(expr ${name_max} + 1)
+      done
+      echo " -   ${note}"
     done
-    echo -n " - "
-    echo -n "  ${note}"
-    note_max=1
-    while [ ${note_max} -le ${note_count} ] ; do
-      echo -n " "
-      note_max=$(expr ${note_max} + 1)
+  else
+    ls -1 ${pwsh_vault}/notes | grep -i "${param}" | while read entry ; do
+      name="${entry}"
+      note="Encrypted Note"
+      name_count=$(echo "notes/${entry}" | wc -m)
+      name_count=$(expr ${name_length} - ${name_count})
+      echo -n "  notes/${name}"
+      name_max=1
+      while [ ${name_max} -le ${name_count} ] ; do
+        echo -n " "
+        name_max=$(expr ${name_max} + 1)
+      done
+      echo " -   ${note}"
     done
-    echo ""
-    count_length=$(expr ${count_length} + 1)
-    if [ ${show_bar} -eq 0 ] ; then
-      row_length=$(expr ${name_length} + ${note_length} + 9)
-      row_length_show=1
-      show_bar=1
-    fi
-  done
-  echo ""
+  fi
 }
 
 function check_corrupted_entry_vault() {
@@ -892,9 +843,11 @@ function run_all_list_process_extracted_vault() {
   list_notes_count=$(ls -1 notes/ | wc -l)
   if [ ${list_logins_count} -ne 0 ] ; then
     process_extracted_vault_logins
+    echo ""
   fi
   if [ ${list_bcard_count} -ne 0 ] ; then
     process_extracted_vault_bcard
+    echo ""
   fi
   if [ ${list_notes_count} -ne 0 ] ; then
     process_extracted_vault_notes
@@ -912,41 +865,6 @@ function list_entries_vault() {
   echo ""
   echo "# Creating Vault List Entries"
   echo ""
-  touch ${pwsh_vault_cache_logins}
-  touch ${pwsh_vault_cache_bcard}
-  touch ${pwsh_vault_cache_notes}
-  list_logins_count=$(ls -1 logins/ | wc -l)
-  list_bcard_count=$(ls -1 bcard/ | wc -l)
-  list_notes_count=$(ls -1 notes/ | wc -l)
-  if [ ${list_logins_count} -ne 0 ] ; then
-    list_logins=$(ls -1 logins/)
-    username_show="Hidden User"
-    password_show="Encrypted Password"
-    url_show="Hidden URL"
-    otp_show="Hidden OTP"
-    for login in ${list_logins} ; do
-      echo "logins/${login},${username_show},${password_show},${url_show},${otp_show}" >> ${pwsh_vault_cache_logins}
-    done
-  fi
-  cd ${pwsh_vault}
-  if [ ${list_bcard_count} -ne 0 ] ; then
-    list_bcard=$(ls -1 bcard/)
-    owner_show="Hidden Owner"
-    num_card_show="Hidden Card"
-    expiry_show="Hidden Expiry"
-    cvv_show="Encrypted CVV"
-    for card in ${list_bcard} ; do
-      echo "bcard/${card},${owner_show},${num_card_show},${expiry_show},${cvv_show}" >> ${pwsh_vault_cache_bcard}
-    done
-  fi
-  cd ${pwsh_vault}
-  if [ ${list_notes_count} -ne 0 ] ; then
-    list_notes=$(ls -1 notes/)
-    note_show="Encrypted Note"
-    for note in ${list_notes} ; do
-      echo "notes/${note},${note_show}" >> ${pwsh_vault_cache_notes}
-    done
-  fi
   run_all_list_process_extracted_vault | pwsh-vaultm -p "  List Entries:"
 }
 
@@ -1304,52 +1222,11 @@ function search_entries_vault() {
   echo ""
   echo "# Preparing Vault List Entries"
   echo ""
-  rm -rf ${pwsh_vault_cache_logins}
-  rm -rf ${pwsh_vault_cache_logins_otp}
-  rm -rf ${pwsh_vault_cache_bcard}
-  rm -rf ${pwsh_vault_cache_notes}
-  list_logins_count=$(ls -1 logins/ | wc -l)
-  list_bcard_count=$(ls -1 bcard/ | wc -l)
-  list_notes_count=$(ls -1 notes/ | wc -l)
-  if [ ${list_logins_count} -ne 0 ] ; then
-    list_logins=$(ls -1 logins/)
-    for login in ${list_logins} ; do
-      username_show="Hidden User"
-      password_show="Encrypted Password"
-      url_show="Hidden URL"
-      otp_show="Hidden OTP"
-      echo "logins/${login},${username_show},${password_show},${url_show},${otp_show}" >> ${pwsh_vault_cache_logins_otp}
-      echo "logins/${login},${username_show},${password_show},${url_show},${otp_show}" >> ${pwsh_vault_cache_logins}
-    done
-  fi
-  cd ${pwsh_vault}
-  if [ ${list_bcard_count} -ne 0 ] ; then
-    list_bcard=$(ls -1 bcard/)
-    for card in ${list_bcard} ; do
-      owner_show="Hidden Owner"
-      num_card_show="Hidden Card"
-      expiry_show="Hidden Expiry"
-      cvv_show="Encrypted CVV"
-      echo "bcard/${card},${owner_show},${num_card_show},${expiry_show},${cvv_show}" >> ${pwsh_vault_cache_bcard}
-    done
-  fi
-  cd ${pwsh_vault}
-  if [ ${list_notes_count} -ne 0 ] ; then
-    list_notes=$(ls -1 notes/)
-    for note in ${list_notes} ; do
-      note_show="Encrypted Note"
-      echo "notes/${note},${note_show}" >> ${pwsh_vault_cache_notes}
-    done
-  fi
   search_entry=$(search_entries_menu_show | pwsh-vaultm -p "  Search Entry:")
   if [ "${search_entry}" == "爵  Search Login/Website Entry" ] ; then
     string_search=$(echo > /dev/null | pwsh-vaultm -p "  Type a string to search:")
     if [ -z "${string_search}" ] ; then
-      rm -rf ${pwsh_vault_cache_temp}
-      touch ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_logins} >> ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_temp} > ${pwsh_vault_cache_logins}
-      lines_read=$(cat ${pwsh_vault_cache_logins} 2> /dev/null | wc -l)
+      lines_read=$(ls -1 ${pwsh_vault}/logins | wc -l)
       if [ ${lines_read} -eq 0 ] ; then
         echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
       else
@@ -1363,15 +1240,11 @@ function search_entries_vault() {
       rm -rf ${pwsh_vault_cache_logins}
       search_entries_vault
     else
-      rm -rf ${pwsh_vault_cache_temp}
-      touch ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_logins} | grep -i "${string_search}" >> ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_temp} > ${pwsh_vault_cache_logins}
-      lines_read=$(cat ${pwsh_vault_cache_logins} 2> /dev/null | wc -l)
+      lines_read=$(ls -1 ${pwsh_vault}/logins | grep -i "${string_search}" | wc -l)
       if [ ${lines_read} -eq 0 ] ; then
         echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
       else
-        copy_clipboard=$(process_extracted_vault_logins | pwsh-vaultm -p "  Search Results:")
+        copy_clipboard=$(process_extracted_vault_logins "${string_search}" | pwsh-vaultm -p "  Search Results:")
         if [ -z "${copy_clipboard}" ] ; then
           echo "# Ignore copy clipboard"
         else
@@ -1384,11 +1257,7 @@ function search_entries_vault() {
   elif [ "${search_entry}" == "爵  Search Login/Website Entry (Show OTP)" ] ; then
     string_search=$(echo > /dev/null | pwsh-vaultm -p "  Type a string to search:")
     if [ -z "${string_search}" ] ; then
-      rm -rf ${pwsh_vault_cache_temp}
-      touch ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_logins_otp} >> ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_temp} > ${pwsh_vault_cache_logins}
-      lines_read=$(cat ${pwsh_vault_cache_logins} 2> /dev/null | wc -l)
+      lines_read=$(ls -1 ${pwsh_vault}/logins | wc -l)
       if [ ${lines_read} -eq 0 ] ; then
         echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
       else
@@ -1402,15 +1271,11 @@ function search_entries_vault() {
       rm -rf ${pwsh_vault_cache_logins}
       search_entries_vault
     else
-      rm -rf ${pwsh_vault_cache_temp}
-      touch ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_logins_otp} | grep -i "${string_search}" >> ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_temp} > ${pwsh_vault_cache_logins}
-      lines_read=$(cat ${pwsh_vault_cache_logins} 2> /dev/null | wc -l)
+      lines_read=$(ls -1 ${pwsh_vault}/logins | grep -i "${string_search}" | wc -l)
       if [ ${lines_read} -eq 0 ] ; then
         echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
       else
-        copy_clipboard=$(process_extracted_vault_logins | pwsh-vaultm -p "  Search Results:")
+        copy_clipboard=$(process_extracted_vault_logins "${string_search}" | pwsh-vaultm -p "  Search Results:")
         if [ -z "${copy_clipboard}" ] ; then
           echo "# Ignore copy clipboard"
         else
@@ -1421,15 +1286,10 @@ function search_entries_vault() {
       rm -rf ${pwsh_vault_cache_logins_otp}
       search_entries_vault
     fi
-    
   elif [ "${search_entry}" == "  Search Credit/Bank Card Entry" ] ; then
     string_search=$(echo > /dev/null | pwsh-vaultm -p "  Type a string to search:")
     if [ -z "${string_search}" ] ; then
-      rm -rf ${pwsh_vault_cache_temp}
-      touch ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_bcard} >> ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_temp} > ${pwsh_vault_cache_bcard}
-      lines_read=$(cat ${pwsh_vault_cache_bcard} 2> /dev/null | wc -l)
+      lines_read=$(ls -1 ${pwsh_vault}/bcard | wc -l)
       if [ ${lines_read} -eq 0 ] ; then
         echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
       else
@@ -1443,15 +1303,11 @@ function search_entries_vault() {
       rm -rf ${pwsh_vault_cache_bcard}
       search_entries_vault
     else
-      rm -rf ${pwsh_vault_cache_temp}
-      touch ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_bcard} | grep -i "${string_search}" >> ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_temp} > ${pwsh_vault_cache_bcard}
-      lines_read=$(cat ${pwsh_vault_cache_bcard} 2> /dev/null | wc -l)
+      lines_read=$(ls -1 ${pwsh_vault}/bcard | grep "${string_search}" | wc -l)
       if [ ${lines_read} -eq 0 ] ; then
         echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
       else
-        copy_clipboard=$(process_extracted_vault_bcard | pwsh-vaultm -p "  Search Results:")
+        copy_clipboard=$(process_extracted_vault_bcard "${string_search}" | pwsh-vaultm -p "  Search Results:")
         if [ -z "${copy_clipboard}" ] ; then
           echo "# Ignore copy clipboard"
         else
@@ -1464,11 +1320,7 @@ function search_entries_vault() {
   elif [ "${search_entry}" == "  Search Note Entry" ] ; then
     string_search=$(echo > /dev/null | pwsh-vaultm -p "  Type a string to search:")
     if [ -z "${string_search}" ] ; then
-      rm -rf ${pwsh_vault_cache_temp}
-      touch ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_notes} >> ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_temp} > ${pwsh_vault_cache_notes}
-      lines_read=$(cat ${pwsh_vault_cache_notes} 2> /dev/null | wc -l)
+      lines_read=$(ls -1 ${pwsh_vault}/notes | wc -l)
       if [ ${lines_read} -eq 0 ] ; then
         echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
       else
@@ -1482,15 +1334,11 @@ function search_entries_vault() {
       rm -rf ${pwsh_vault_cache_notes}
       search_entries_vault
     else
-      rm -rf ${pwsh_vault_cache_temp}
-      touch ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_notes} | grep -i "${string_search}" >> ${pwsh_vault_cache_temp}
-      cat ${pwsh_vault_cache_temp} > ${pwsh_vault_cache_notes}
-      lines_read=$(cat ${pwsh_vault_cache_notes} 2> /dev/null | wc -l)
+      lines_read=$(ls -1 ${pwsh_vault}/notes | grep "${string_search}" | wc -l)
       if [ ${lines_read} -eq 0 ] ; then
         echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
       else
-        copy_clipboard=$(process_extracted_vault_notes | pwsh-vaultm -p "  Search Results:")
+        copy_clipboard=$(process_extracted_vault_notes "${string_search}" | pwsh-vaultm -p "  Search Results:")
         if [ -z "${copy_clipboard}" ] ; then
           echo "# Ignore copy clipboard"
         else
