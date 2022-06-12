@@ -5,7 +5,7 @@
 # Author: q3aql                                             #
 # Contact: q3aql@duck.com                                   #
 # License: GPL v2.0                                         #
-# Last-Change: 11-06-20222                                  #
+# Last-Change: 12-06-20222                                  #
 # ###########################################################
 VERSION="0.1"
 
@@ -711,48 +711,21 @@ function list_entries_vault() {
   echo "# pwsh-vault-cli ${VERSION}"
   echo ""
   echo "# Creating Vault List Entries:"
-  echo ""
-  echo "ENTRY/NAME,LOGIN,PASSWORD,URL,OTP" > ${pwsh_vault_cache_logins}
-  echo "ENTRY/NAME,OWNER,NUM_CARD,EXPIRY,CVV" > ${pwsh_vault_cache_bcard}
-  echo "ENTRY/NAME,NOTE" > ${pwsh_vault_cache_notes}
   list_logins_count=$(ls -1 logins/ | wc -l)
   list_bcard_count=$(ls -1 bcard/ | wc -l)
   list_notes_count=$(ls -1 notes/ | wc -l)
   if [ ${list_logins_count} -ne 0 ] ; then
-    list_logins=$(ls -1 logins/)
-    username_show="Hidden User"
-    password_show="Encrypted Password"
-    url_show="Hidden URL"
-    otp_show="Hidden OTP"
-    for login in ${list_logins} ; do
-      echo "logins/${login},${username_show},${password_show},${url_show},${otp_show}" >> ${pwsh_vault_cache_logins}
-    done
     process_extracted_vault_logins
-    rm -rf ${pwsh_vault_cache_logins}
   fi
   cd ${pwsh_vault}
   if [ ${list_bcard_count} -ne 0 ] ; then
-    list_bcard=$(ls -1 bcard/)
-    owner_show="Hidden Owner"
-    num_card_show="Hidden Card"
-    expiry_show="Hidden Expiry"
-    cvv_show="Encrypted CVV"
-    for card in ${list_bcard} ; do
-      echo "bcard/${card},${owner_show},${num_card_show},${expiry_show},${cvv_show}" >> ${pwsh_vault_cache_bcard}
-    done
     process_extracted_vault_bcard
-    rm -rf ${pwsh_vault_cache_bcard}
   fi
   cd ${pwsh_vault}
   if [ ${list_notes_count} -ne 0 ] ; then
-    list_notes=$(ls -1 notes/)
-    note_show="Encrypted Note"
-    for note in ${list_notes} ; do
-      echo "notes/${note},${note_show}" >> ${pwsh_vault_cache_notes}
-    done
     process_extracted_vault_notes
-    rm -rf ${pwsh_vault_cache_notes}
   fi
+  echo ""
   echo -n "# Press enter key to continue " ; read enter_continue
 }
 
