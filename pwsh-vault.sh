@@ -5,7 +5,7 @@
 # Author: q3aql                                           #
 # Contact: q3aql@duck.com                                 #
 # License: GPL v2.0                                       #
-# Last-Change: 12-06-20222                                #
+# Last-Change: 13-06-20222                                #
 # #########################################################
 VERSION="0.1"
 
@@ -1412,6 +1412,7 @@ touch ${pwsh_vault_cache_logins}
 touch ${pwsh_vault_cache_notes}
 touch ${pwsh_vault_cache_bcard}
 touch ${pwsh_vault_cache_temp}
+rm -rf ${pwsh_vault_clipboard_copy}
 if [ "${1}" == "--help" ] ; then
   pwsh_vault_help
 elif [ "${1}" == "--export" ] ; then
