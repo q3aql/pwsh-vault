@@ -4,10 +4,13 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
 ### Dependencies:
   
   * **Arch Linux:**
-    * `sudo pacman -S gcc make coreutils sed expat zip unzip freetype2 libxinerama brotli fontconfig libbsd libmd libpng libx11 libxau libxdmcp libxft libxrender` 
+    * `sudo pacman -S git gcc make coreutils sed expat zip unzip freetype2 libxinerama brotli fontconfig libbsd libmd libpng libx11 libxau libxdmcp libxft libxrender` 
 
   * **Debian/Ubuntu:**
-    * `sudo apt install gcc make coreutils sed zip unzip libexpat1-dev libfreetype-dev libxinerama-dev x11-utils libxft-dev libfreetype6-dev libfontconfig1-dev libpng-dev libbrotli-dev libxrender-dev libmd-dev libxau-dev libbsd-dev libxdmcp-dev`
+    * `sudo apt install git gcc make coreutils sed zip unzip libexpat1-dev libfreetype-dev libxinerama-dev x11-utils libxft-dev libfreetype6-dev libfontconfig1-dev libpng-dev libbrotli-dev libxrender-dev libmd-dev libxau-dev libbsd-dev libxdmcp-dev`
+
+  * **Cygwin ([apt-cyg](https://github.com/transcode-open/apt-cyg)):**
+    * `apt-cyg install git make coreutils sed zip unzip`
 
 ### Build and install (Posix):
 
@@ -19,7 +22,7 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
   $ sudo make install clean
   ````
 
-### Build and install (Cygwin):
+### Download & install (Cygwin):
 
 * Open terminal and run the following commands:
 
@@ -57,4 +60,5 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
 ### External links:
 
   * [dmenu homepage](https://tools.suckless.org/dmenu/)
-
+  * [apt-cyg](https://github.com/transcode-open/apt-cyg)
+  * [Cygwin](https://www.cygwin.com/)
