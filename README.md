@@ -4,12 +4,12 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
 ### Dependencies:
   
   * **Arch Linux:**
-    * `sudo pacman -S gcc make coreutils sed expat zip unzip freetype2 libxinerama xterm brotli fontconfig libbsd libmd libpng libx11 libxau libxdmcp libxft libxrender` 
+    * `sudo pacman -S gcc make coreutils sed expat zip unzip freetype2 libxinerama brotli fontconfig libbsd libmd libpng libx11 libxau libxdmcp libxft libxrender` 
 
   * **Debian/Ubuntu:**
     * `sudo apt install gcc make coreutils sed zip unzip libexpat1-dev libfreetype-dev libxinerama-dev x11-utils libxft-dev libfreetype6-dev libfontconfig1-dev libpng-dev libbrotli-dev libxrender-dev libmd-dev libxau-dev libbsd-dev libxdmcp-dev`
 
-### Build and install:
+### Build and install (Posix):
 
 * Open terminal and run the following commands:
 
@@ -17,6 +17,16 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
   $ git clone https://github.com/q3aql/pwsh-vault.git
   $ cd pwsh-vault
   $ sudo make install clean
+  ````
+
+### Build and install (Cygwin):
+
+* Open terminal and run the following commands:
+
+  ```shell
+  $ git clone https://github.com/q3aql/pwsh-vault.git
+  $ cd pwsh-vault
+  $ make cygwin
   ````
 
 ### GUI Version:
