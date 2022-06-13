@@ -65,6 +65,10 @@ install: all
 	ln -s $(DESTDIR)$(PREFIX)/pwsh-vault-cli /usr/bin/pwsh-vault-cli
 	ln -s $(DESTDIR)$(PREFIX)/pwsh-vaultm /usr/bin/pwsh-vaultm
 
+cygwin:
+	cp -f pwsh-vault-cli.sh /usr/bin/pwsh-vault-cli
+	chmod 755 /usr/bin/pwsh-vault-cli
+
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/pwsh-vaultm\
 		$(DESTDIR)$(PREFIX)/pwsh-vault\
