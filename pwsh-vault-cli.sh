@@ -17,7 +17,7 @@ pwsh_vault_cache_logins_otp="${HOME}/.cache/pwsh_vault_cache_logins_otp"
 pwsh_vault_cache_notes="${HOME}/.cache/pwsh_vault_cache_notes"
 pwsh_vault_cache_bcard="${HOME}/.cache/pwsh_vault_cache_bcard"
 pwsh_vault_cache_temp="${HOME}/.cache/pwsh_vault_cache_temp"
-file_code_sec="/tmp/pwsh-vault-seq"
+file_code_sec="${HOME}/.cache/pwsh-vault-seq"
 show_key_encrypted=0
  
 function generate_codes() {
