@@ -9,10 +9,13 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
   * **Debian/Ubuntu:**
     * `sudo apt install git gcc make coreutils sed zip unzip libexpat1-dev libfreetype-dev libxinerama-dev x11-utils libxft-dev libfreetype6-dev libfontconfig1-dev libpng-dev libbrotli-dev libxrender-dev libmd-dev libxau-dev libbsd-dev libxdmcp-dev`
 
-  * **Cygwin ([apt-cyg](https://github.com/transcode-open/apt-cyg)):**
+  * **Windows Cygwin ([apt-cyg](https://github.com/transcode-open/apt-cyg)):**
     * `apt-cyg install git make coreutils sed zip unzip`
+    
+  * **Android ([Termux](https://termux.com/)):**
+    * `pkg install git make coreutils sed zip unzip`
 
-### Build and install (Posix):
+### Build and install (Unix/Linux Posix):
 
 * Open terminal and run the following commands:
 
@@ -22,7 +25,7 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
   $ sudo make install clean
   ````
 
-### Download & install (Cygwin):
+### Download & install (Windows Cygwin):
 
 * Open terminal and run the following commands:
 
@@ -32,7 +35,17 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
   $ make cygwin
   ````
 
-### GUI Version:
+### Download & install (Android Termux):
+
+* Open terminal and run the following commands:
+
+  ```shell
+  $ git clone https://github.com/q3aql/pwsh-vault.git
+  $ cd pwsh-vault
+  $ make termux
+  ````
+
+### GUI Version (only for Linux):
 
   ```shell
   pwsh-vault
