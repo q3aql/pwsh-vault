@@ -5,7 +5,7 @@
 # Author: q3aql                                           #
 # Contact: q3aql@duck.com                                 #
 # License: GPL v2.0                                       #
-# Last-Change: 13-06-20222                                #
+# Last-Change: 18-06-20222                                #
 # #########################################################
 VERSION="0.1"
 
