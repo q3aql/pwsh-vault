@@ -68,6 +68,10 @@ install: all
 cygwin:
 	cp -f pwsh-vault-cli.sh /usr/bin/pwsh-vault-cli
 	chmod 755 /usr/bin/pwsh-vault-cli
+	
+termux:
+	cp -f pwsh-vault-cli.sh ${PREFIX}/bin/pwsh-vault-cli
+	chmod 755 ${PREFIX}/bin/pwsh-vault-cli
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/pwsh-vaultm\
