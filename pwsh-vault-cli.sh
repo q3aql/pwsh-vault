@@ -953,8 +953,6 @@ function search_entries_vault() {
   echo ""
   echo "# pwsh-vault-cli ${VERSION}"
   echo ""
-  echo "# Preparing Vault List Entries:"
-  echo ""
   rm -rf ${pwsh_vault_cache_logins}
   rm -rf ${pwsh_vault_cache_logins_otp}
   rm -rf ${pwsh_vault_cache_bcard}
@@ -962,34 +960,28 @@ function search_entries_vault() {
   list_logins_count=$(ls -1 logins/ | wc -l)
   list_bcard_count=$(ls -1 bcard/ | wc -l)
   list_notes_count=$(ls -1 notes/ | wc -l)
+  total_count_vaults=$(expr ${list_logins_count} + ${list_bcard_count} + ${list_notes_count})
+  echo "# Preparing Vault List Entries (${total_count_vaults}):"
+  echo ""
   if [ ${list_logins_count} -ne 0 ] ; then
     list_logins=$(ls -1 logins/)
-    username_show="Hidden User"
-    password_show="Encrypted Password"
-    url_show="Hidden URL"
-    otp_show="Hidden OTP"
     for login in ${list_logins} ; do
-      echo "logins/${login},${username_show},${password_show},${url_show},${otp_show}" >> ${pwsh_vault_cache_logins_otp}
-      echo "logins/${login},${username_show},${password_show},${url_show},${otp_show}" >> ${pwsh_vault_cache_logins}
+      echo "logins/${login}" >> ${pwsh_vault_cache_logins_otp}
+      echo "logins/${login}" >> ${pwsh_vault_cache_logins}
     done
   fi
   cd ${pwsh_vault}
   if [ ${list_bcard_count} -ne 0 ] ; then
     list_bcard=$(ls -1 bcard/)
-    owner_show="Hidden Owner"
-    num_card_show="Hidden Card"
-    expiry_show="Hidden Expiry"
-    cvv_show="Encrypted CVV"
     for card in ${list_bcard} ; do
-      echo "bcard/${card},${owner_show},${num_card_show},${expiry_show},${cvv_show}" >> ${pwsh_vault_cache_bcard}
+      echo "bcard/${card}" >> ${pwsh_vault_cache_bcard}
     done
   fi
   cd ${pwsh_vault}
   if [ ${list_notes_count} -ne 0 ] ; then
     list_notes=$(ls -1 notes/)
-    note_show="Encrypted Note"
     for note in ${list_notes} ; do
-      echo "notes/${note},${note_show}" >> ${pwsh_vault_cache_notes}
+      echo "notes/${note}" >> ${pwsh_vault_cache_notes}
     done
   fi
   echo " l --> Search Login/Website Entry"
@@ -1017,12 +1009,20 @@ function search_entries_vault() {
         echo -n "# Press enter key to continue " ; read enter_continue
       else
         count=1
-        for show in $(cat ${pwsh_vault_cache_logins} | cut -d "," -f 1) ; do
-          echo " ${count} --> ${show},${username_show},${password_show},${url_show},${otp_show}"
+        for show in $(cat ${pwsh_vault_cache_logins}) ; do
+          if [ ${count} -lt 100 ] ; then
+            if [ ${count} -lt 10 ] ; then
+              echo "   ${count} --> ${show}"
+            else
+              echo "  ${count} --> ${show}"
+            fi
+          else
+            echo " ${count} --> ${show}"
+          fi
           count=$(expr ${count} + 1)
         done
         echo ""
-        echo " b --> Back"
+        echo "   b --> Back"
         echo ""
         search_show_entry=""
         while [ "${search_show_entry}" != "b" ] ; do
@@ -1086,12 +1086,20 @@ function search_entries_vault() {
         echo -n "# Press enter key to continue " ; read enter_continue
       else
         count=1
-        for show in $(cat ${pwsh_vault_cache_logins} | cut -d "," -f 1) ; do
-          echo " ${count} --> ${show},${username_show},${password_show},${url_show},${otp_show}"
+        for show in $(cat ${pwsh_vault_cache_logins}) ; do
+          if [ ${count} -lt 100 ] ; then
+            if [ ${count} -lt 10 ] ; then
+              echo "   ${count} --> ${show}"
+            else
+              echo "  ${count} --> ${show}"
+            fi
+          else
+            echo " ${count} --> ${show}"
+          fi
           count=$(expr ${count} + 1)
         done
         echo ""
-        echo " b --> Back"
+        echo "   b --> Back"
         echo ""
         search_show_entry=""
         while [ "${search_show_entry}" != "b" ] ; do
@@ -1161,12 +1169,20 @@ function search_entries_vault() {
         echo -n "# Press enter key to continue " ; read enter_continue
       else
         count=1
-        for show in $(cat ${pwsh_vault_cache_logins} | cut -d "," -f 1) ; do
-          echo " ${count} --> ${show},${username_show},${password_show},${url_show},${otp_show}"
+        for show in $(cat ${pwsh_vault_cache_logins}) ; do
+          if [ ${count} -lt 100 ] ; then
+            if [ ${count} -lt 10 ] ; then
+              echo "   ${count} --> ${show}"
+            else
+              echo "  ${count} --> ${show}"
+            fi
+          else
+            echo " ${count} --> ${show}"
+          fi
           count=$(expr ${count} + 1)
         done
         echo ""
-        echo "b --> Back"
+        echo "   b --> Back"
         echo ""
         search_show_entry=""
         while [ "${search_show_entry}" != "b" ] ; do
@@ -1227,12 +1243,20 @@ function search_entries_vault() {
         echo -n "# Press enter key to continue " ; read enter_continue
       else
         count=1
-        for show in $(cat ${pwsh_vault_cache_logins} | cut -d "," -f 1) ; do
-          echo " ${count} --> ${show},${username_show},${password_show},${url_show},${otp_show}"
+        for show in $(cat ${pwsh_vault_cache_logins}) ; do
+          if [ ${count} -lt 100 ] ; then
+            if [ ${count} -lt 10 ] ; then
+              echo "   ${count} --> ${show}"
+            else
+              echo "  ${count} --> ${show}"
+            fi
+          else
+            echo " ${count} --> ${show}"
+          fi
           count=$(expr ${count} + 1)
         done
         echo ""
-        echo " b --> Back"
+        echo "   b --> Back"
         echo ""
         search_show_entry=""
         while [ "${search_show_entry}" != "b" ] ; do
@@ -1297,12 +1321,20 @@ function search_entries_vault() {
         echo -n "# Press enter key to continue " ; read enter_continue
       else
         count=1
-        for show in $(cat ${pwsh_vault_cache_bcard} | cut -d "," -f 1) ; do
-          echo " ${count} --> ${show},${owner_show},${num_card_show},${expiry_show},${cvv_show}"
+        for show in $(cat ${pwsh_vault_cache_bcard}) ; do
+          if [ ${count} -lt 100 ] ; then
+            if [ ${count} -lt 10 ] ; then
+              echo "   ${count} --> ${show}"
+            else
+              echo "  ${count} --> ${show}"
+            fi
+          else
+            echo " ${count} --> ${show}"
+          fi
           count=$(expr ${count} + 1)
         done
         echo ""
-        echo " b --> Back"
+        echo "   b --> Back"
         echo ""
         search_show_entry=""
         while [ "${search_show_entry}" != "b" ] ; do
@@ -1361,12 +1393,20 @@ function search_entries_vault() {
         echo -n "# Press enter key to continue " ; read enter_continue
       else
         count=1
-        for show in $(cat ${pwsh_vault_cache_bcard} | cut -d "," -f 1) ; do
-          echo " ${count} --> ${show},${owner_show},${num_card_show},${expiry_show},${cvv_show}"
+        for show in $(cat ${pwsh_vault_cache_bcard}) ; do
+          if [ ${count} -lt 100 ] ; then
+            if [ ${count} -lt 10 ] ; then
+              echo "   ${count} --> ${show}"
+            else
+              echo "  ${count} --> ${show}"
+            fi
+          else
+            echo " ${count} --> ${show}"
+          fi
           count=$(expr ${count} + 1)
         done
         echo ""
-        echo " b --> Back"
+        echo "   b --> Back"
         echo ""
         search_show_entry=""
         while [ "${search_show_entry}" != "b" ] ; do
@@ -1430,12 +1470,20 @@ function search_entries_vault() {
         echo -n "# Press enter key to continue " ; read enter_continue
       else
         count=1
-        for show in $(cat ${pwsh_vault_cache_notes} | cut -d "," -f 1) ; do
-          echo " ${count} --> ${show},${note_show}"
+        for show in $(cat ${pwsh_vault_cache_notes}) ; do
+          if [ ${count} -lt 100 ] ; then
+            if [ ${count} -lt 10 ] ; then
+              echo "   ${count} --> ${show}"
+            else
+              echo "  ${count} --> ${show}"
+            fi
+          else
+            echo " ${count} --> ${show}"
+          fi
           count=$(expr ${count} + 1)
         done
         echo ""
-        echo " b --> Back"
+        echo "   b --> Back"
         echo ""
         search_show_entry=""
         while [ "${search_show_entry}" != "b" ] ; do
@@ -1486,12 +1534,20 @@ function search_entries_vault() {
         echo -n "# Press enter key to continue " ; read enter_continue
       else
         count=1
-        for show in $(cat ${pwsh_vault_cache_notes} | cut -d "," -f 1) ; do
-          echo " ${count} --> ${show},${note_show}"
+        for show in $(cat ${pwsh_vault_cache_notes}) ; do
+          if [ ${count} -lt 100 ] ; then
+            if [ ${count} -lt 10 ] ; then
+              echo "   ${count} --> ${show}"
+            else
+              echo "  ${count} --> ${show}"
+            fi
+          else
+            echo " ${count} --> ${show}"
+          fi
           count=$(expr ${count} + 1)
         done
         echo ""
-        echo " b --> Back"
+        echo "   b --> Back"
         echo ""
         search_show_entry=""
         while [ "${search_show_entry}" != "b" ] ; do
