@@ -5,7 +5,7 @@
 # Author: q3aql                                           #
 # Contact: q3aql@duck.com                                 #
 # License: GPL v2.0                                       #
-# Last-Change: 18-06-20222                                #
+# Last-Change: 24-06-20222                                #
 # #########################################################
 VERSION="0.1"
 
@@ -561,128 +561,17 @@ function pwsh_vault_help() {
     exit
 }
 
-function size_extracted_vault_logins() {
-  param_s="${1}"
-  name_length=1
-  name_count=1
-  if [ -z "${param_s}" ] ; then
-    ls -1 ${pwsh_vault}/logins | while read entry ; do
-      name_count=$(echo "logins/${entry}" | wc -m)
-      # Compare the maximum size of the variables
-      if [ ${name_count} -gt ${name_length} ] ; then
-        name_length=${name_count}
-        echo ${name_length}
-      fi
-    done
-  else
-    ls -1 ${pwsh_vault}/logins | grep -i "${param_s}" | while read entry ; do
-      name_count=$(echo "logins/${entry}" | wc -m)
-      # Compare the maximum size of the variables
-      if [ ${name_count} -gt ${name_length} ] ; then
-        name_length=${name_count}
-        echo ${name_length}
-      fi
-    done
-  fi
-}
-
-function size_extracted_vault_bcard() {
-  param_s="${1}"
-  name_length=1
-  name_count=1
-  if [ -z "${param_s}" ] ; then
-    ls -1 ${pwsh_vault}/bcard | while read entry ; do
-      name_count=$(echo "bcard/${entry}" | wc -m)
-      # Compare the maximum size of the variables
-      if [ ${name_count} -gt ${name_length} ] ; then
-        name_length=${name_count}
-        echo ${name_length}
-      fi
-    done
-  else
-    ls -1 ${pwsh_vault}/bcard | grep -i "${param_s}" | while read entry ; do
-      name_count=$(echo "logins/${entry}" | wc -m)
-      # Compare the maximum size of the variables
-      if [ ${name_count} -gt ${name_length} ] ; then
-        name_length=${name_count}
-        echo ${name_length}
-      fi
-    done
-  fi
-}
-
-function size_extracted_vault_notes() {
-  param_s="${1}"
-  name_length=1
-  name_count=1
-  if [ -z "${param_s}" ] ; then
-    ls -1 ${pwsh_vault}/notes | while read entry ; do
-      name_count=$(echo "notes/${entry}" | wc -m)
-      # Compare the maximum size of the variables
-      if [ ${name_count} -gt ${name_length} ] ; then
-        name_length=${name_count}
-        echo ${name_length}
-      fi
-    done
-  else
-    ls -1 ${pwsh_vault}/notes | grep -i "${param_s}" | while read entry ; do
-      name_count=$(echo "logins/${entry}" | wc -m)
-      # Compare the maximum size of the variables
-      if [ ${name_count} -gt ${name_length} ] ; then
-        name_length=${name_count}
-        echo ${name_length}
-      fi
-    done
-  fi
-}
-
 function process_extracted_vault_logins() {
   param="${1}"
   if [ -z "${param}" ] ; then
-    name_length=$(size_extracted_vault_logins | tail -1)
-  else
-    name_length=$(size_extracted_vault_logins "${param}" | tail -1)
-  fi
-  login_length="11"
-  password_length="18"
-  url_length="10"
-  otp_length="10"
-  count_length=1
-  row_length=$(expr ${name_length} + ${login_length} + ${password_length} + ${url_length} + ${otp_length} + 10)
-  row_length_show=1
-  if [ -z "${param}" ] ; then
     ls -1 ${pwsh_vault}/logins | while read entry ; do
       name="${entry}"
-      login="Hidden User"
-      password="Encrypted Password"
-      url="Hidden URL"
-      otp="Hidden OTP"
-      name_count=$(echo "logins/${entry}" | wc -m)
-      name_count=$(expr ${name_length} - ${name_count})
-      echo -n "  logins/${name}"
-      name_max=1
-      while [ ${name_max} -le ${name_count} ] ; do
-        echo -n " "
-        name_max=$(expr ${name_max} + 1)
-      done
-      echo " - 﫻  ${login} -   ${password} - 爵  ${url} - 勒  ${otp}"
+      echo "爵  logins/${name}"
     done
   else
     ls -1 ${pwsh_vault}/logins | grep -i "${param}" | while read entry ; do
       name="${entry}"
-      login="Hidden User"
-      password="Encrypted Password"
-      url="Hidden URL"
-      otp="Hidden OTP"
-      name_count=$(echo "logins/${entry}" | wc -m)
-      name_count=$(expr ${name_length} - ${name_count})
-      echo -n "  logins/${name}"
-      name_max=1
-      while [ ${name_max} -le ${name_count} ] ; do
-        echo -n " "
-        name_max=$(expr ${name_max} + 1)
-      done
-      echo " - 﫻  ${login} -   ${password} - 爵  ${url} - 勒  ${otp}"
+      echo "爵  logins/${name}"
     done
   fi
 }
@@ -690,49 +579,14 @@ function process_extracted_vault_logins() {
 function process_extracted_vault_bcard() {
   param="${1}"
   if [ -z "${param}" ] ; then
-    name_length=$(size_extracted_vault_bcard | tail -1)
-  else
-    name_length=$(size_extracted_vault_bcard "${param}" | tail -1)
-  fi
-  owner_length="12"
-  card_length="11"
-  expiry_length="13"
-  cvv_length="13"
-  row_length=$(expr ${name_length} + ${owner_length} + ${card_length} + ${expiry_length} + ${cvv_length} + 10)
-  row_length_show=1
-  if [ -z "${param}" ] ; then
     ls -1 ${pwsh_vault}/bcard | while read entry ; do
       name="${entry}"
-      owner="Hidden Owner"
-      card="Hidden Card"
-      expiry="Hidden Expiry"
-      cvv="Encrypted CVV"
-      name_count=$(echo "bcard/${entry}" | wc -m)
-      name_count=$(expr ${name_length} - ${name_count})
-      echo -n "  bcard/${name}"
-      name_max=1
-      while [ ${name_max} -le ${name_count} ] ; do
-        echo -n " "
-        name_max=$(expr ${name_max} + 1)
-      done
-      echo " -   ${owner} -   ${card} -   ${expiry} - 况  ${cvv}"
+      echo "  bcard/${name}"
     done
   else
     ls -1 ${pwsh_vault}/bcard | grep -i "${param}" | while read entry ; do
       name="${entry}"
-      owner="Hidden Owner"
-      card="Hidden Card"
-      expiry="Hidden Expiry"
-      cvv="Encrypted CVV"
-      name_count=$(echo "bcard/${entry}" | wc -m)
-      name_count=$(expr ${name_length} - ${name_count})
-      echo -n "  bcard/${name}"
-      name_max=1
-      while [ ${name_max} -le ${name_count} ] ; do
-        echo -n " "
-        name_max=$(expr ${name_max} + 1)
-      done
-      echo " -   ${owner} -   ${card} -   ${expiry} - 况  ${cvv}"
+      echo "  bcard/${name}"
     done
   fi
 }
@@ -740,40 +594,14 @@ function process_extracted_vault_bcard() {
 function process_extracted_vault_notes() {
   param="${1}"
   if [ -z "${param}" ] ; then
-    name_length=$(size_extracted_vault_notes | tail -1)
-  else
-    name_length=$(size_extracted_vault_notes "${param}" | tail -1)
-  fi
-  note_length="14"
-  row_length=$(expr ${name_length} + ${note_length} + 4)
-  row_length_show=1
-  if [ -z "${param}" ] ; then
     ls -1 ${pwsh_vault}/notes | while read entry ; do
       name="${entry}"
-      note="Encrypted Note"
-      name_count=$(echo "notes/${entry}" | wc -m)
-      name_count=$(expr ${name_length} - ${name_count})
-      echo -n "  notes/${name}"
-      name_max=1
-      while [ ${name_max} -le ${name_count} ] ; do
-        echo -n " "
-        name_max=$(expr ${name_max} + 1)
-      done
-      echo " -   ${note}"
+      echo "  notes/${name}"
     done
   else
     ls -1 ${pwsh_vault}/notes | grep -i "${param}" | while read entry ; do
       name="${entry}"
-      note="Encrypted Note"
-      name_count=$(echo "notes/${entry}" | wc -m)
-      name_count=$(expr ${name_length} - ${name_count})
-      echo -n "  notes/${name}"
-      name_max=1
-      while [ ${name_max} -le ${name_count} ] ; do
-        echo -n " "
-        name_max=$(expr ${name_max} + 1)
-      done
-      echo " -   ${note}"
+      echo "  notes/${name}"
     done
   fi
 }
