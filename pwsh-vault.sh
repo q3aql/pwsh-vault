@@ -782,7 +782,11 @@ function change_masterkey_vault() {
 }
 
 function remove_entry_vault() {
-  vault_remove_entry=$(list_folders_pwsh_vault | pwsh-vaultm -p "  Remove Entry:")
+  count_logins=$(ls -1 ${pwsh_vault}/logins/ | wc -l)
+  count_notes=$(ls -1 ${pwsh_vault}/notes/ | wc -l)
+  count_bcard=$(ls -1 ${pwsh_vault}/bcard/ | wc -l)
+  count_total=$(expr ${count_logins} + ${count_notes} + ${count_bcard})
+  vault_remove_entry=$(list_folders_pwsh_vault | pwsh-vaultm -p "  Remove Entry (${count_total}):")
   vault_remove_entry=$(echo ${vault_remove_entry} | cut -c5-999)
   if [ -z "${vault_remove_entry}" ] ; then
     echo "# Canceled Remove Entry"
@@ -804,7 +808,11 @@ function remove_entry_vault() {
 }
 
 function edit_entry_vault() {
-  vault_edit_entry=$(list_folders_pwsh_vault | pwsh-vaultm -p "  Edit Entry:")
+  count_logins=$(ls -1 ${pwsh_vault}/logins/ | wc -l)
+  count_notes=$(ls -1 ${pwsh_vault}/notes/ | wc -l)
+  count_bcard=$(ls -1 ${pwsh_vault}/bcard/ | wc -l)
+  count_total=$(expr ${count_logins} + ${count_notes} + ${count_bcard})
+  vault_edit_entry=$(list_folders_pwsh_vault | pwsh-vaultm -p "  Edit Entry (${count_total}):")
   vault_edit_entry=$(echo ${vault_edit_entry} | cut -c5-999)
   if [ -z "${vault_edit_entry}" ] ; then
     echo "# Canceled Edit Entry"
