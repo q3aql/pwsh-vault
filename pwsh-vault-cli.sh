@@ -523,6 +523,7 @@ function pwsh_vault_help() {
     echo "  $ pwsh-vault-cli                      --> Run Main CLI"
     echo "  $ pwsh-vault-cli --export [--encrypt] --> Export Vault"
     echo "  $ pwsh-vault-cli --import <path-file> --> Import Vault"
+    echo "  $ pwsh-vault-cli --reset              --> Delete all settings"
     echo "  $ pwsh-vault-cli --gen-password [num] --> Generate password"
     echo "  $ pwsh-vault-cli --help               --> Show Help"
     echo ""
@@ -1624,6 +1625,15 @@ function search_entries_vault() {
   fi
 }
 
+function reset_config() {
+  echo "# All settings will be deleted"
+  echo -n "# Do you want to continue (Default: n) (y/n): " ; read reset
+  if [ "${reset}" == "y" ] ; then
+    rm -rfv ${pwsh_vault}/*
+    echo "# All settings have been deleted"
+  fi
+}
+
 function pwsh_vault_main() {
   vault_main_init=0
   while [ ${vault_main_init} -eq 0 ] ;do
@@ -1686,6 +1696,8 @@ touch ${pwsh_vault_cache_bcard}
 touch ${pwsh_vault_cache_temp}
 if [ "${1}" == "--help" ] ; then
   pwsh_vault_help
+elif [ "${1}" == "-h" ] ; then
+  pwsh_vault_help
 elif [ "${1}" == "--export" ] ; then
   if [ "${2}" == "--encrypt" ] ; then
     export_pwsh_vault_param_encrypt
@@ -1694,6 +1706,8 @@ elif [ "${1}" == "--export" ] ; then
   fi
 elif [ "${1}" == "--import" ] ; then
   import_pwsh_vault_param "${2}"
+elif [ "${1}" == "--reset" ] ; then
+  reset_config
 elif [ "${1}" == "--gen-password" ] ; then
   if [ -z "${2}" ] ; then
     generate_password "20" "param"
