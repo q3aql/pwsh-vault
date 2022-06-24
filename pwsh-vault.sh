@@ -688,12 +688,16 @@ function run_all_list_process_extracted_vault() {
 function list_entries_vault() {
   clear
   cd ${pwsh_vault}
+  list_logins_count=$(ls -1 logins/ | wc -l)
+  list_bcard_count=$(ls -1 bcard/ | wc -l)
+  list_notes_count=$(ls -1 notes/ | wc -l)
+  total_count_vaults=$(expr ${list_logins_count} + ${list_bcard_count} + ${list_notes_count})
   echo ""
   echo "# pwsh-vault ${VERSION}"
   echo ""
   echo "# Creating Vault List Entries"
   echo ""
-  run_all_list_process_extracted_vault | pwsh-vaultm -p "  List Entries:"
+  run_all_list_process_extracted_vault | pwsh-vaultm -p "  List Entries (${total_count_vaults}):"
 }
 
 function change_masterkey_vault() {
