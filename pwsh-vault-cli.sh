@@ -738,7 +738,7 @@ function remove_entry_vault() {
   echo ""
   echo "# pwsh-vault-cli ${VERSION}"
   echo ""
-  echo "# Your Current Vault Entries: "
+  echo "# Your Current Vault Entries (${count_total}): "
   echo ""
   if [ ${count_logins} -ne 0 ] ; then
     list_logins=$(ls -1 ${pwsh_vault}/logins/)
@@ -798,7 +798,7 @@ function edit_entry_vault() {
   echo ""
   echo "# pwsh-vault-cli ${VERSION}"
   echo ""
-  echo "# Your Current Vault Entries: "
+  echo "# Your Current Vault Entries (${count_total}): "
   echo ""
   if [ ${count_logins} -ne 0 ] ; then
     list_logins=$(ls -1 ${pwsh_vault}/logins/)
