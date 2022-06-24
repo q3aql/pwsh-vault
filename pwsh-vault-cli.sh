@@ -5,7 +5,7 @@
 # Author: q3aql                                             #
 # Contact: q3aql@duck.com                                   #
 # License: GPL v2.0                                         #
-# Last-Change: 18-06-20222                                  #
+# Last-Change: 24-06-20222                                  #
 # ###########################################################
 VERSION="0.1"
 
@@ -530,118 +530,27 @@ function pwsh_vault_help() {
     exit
 }
 
-function size_extracted_vault_logins() {
-  name_length=1
-  name_count=1
-  ls -1 ${pwsh_vault}/logins | while read entry ; do
-    name_count=$(echo "logins/${entry}" | wc -m)
-    # Compare the maximum size of the variables
-    if [ ${name_count} -gt ${name_length} ] ; then
-      name_length=${name_count}
-      echo ${name_length}
-    fi
-  done
-}
-
-function size_extracted_vault_bcard() {
-  name_length=1
-  name_count=1
-  ls -1 ${pwsh_vault}/bcard | while read entry ; do
-    name_count=$(echo "bcard/${entry}" | wc -m)
-    # Compare the maximum size of the variables
-    if [ ${name_count} -gt ${name_length} ] ; then
-      name_length=${name_count}
-      echo ${name_length}
-    fi
-  done
-}
-
-function size_extracted_vault_notes() {
-  name_length=1
-  name_count=1
-  ls -1 ${pwsh_vault}/notes | while read entry ; do
-    name_count=$(echo "notes/${entry}" | wc -m)
-    # Compare the maximum size of the variables
-    if [ ${name_count} -gt ${name_length} ] ; then
-      name_length=${name_count}
-      echo ${name_length}
-    fi
-  done
-}
-
 function process_extracted_vault_logins() {
-  name_length=$(size_extracted_vault_logins | tail -1)
-  login_length="11"
-  password_length="18"
-  url_length="10"
-  otp_length="10"
-  count_length=1
-  row_length=$(expr ${name_length} + ${login_length} + ${password_length} + ${url_length} + ${otp_length} + 10)
-  row_length_show=1
   echo ""
   ls -1 ${pwsh_vault}/logins | while read entry ; do
     name="${entry}"
-    login="Hidden User"
-    password="Encrypted Password"
-    url="Hidden URL"
-    otp="Hidden OTP"
-    name_count=$(echo "logins/${entry}" | wc -m)
-    name_count=$(expr ${name_length} - ${name_count})
-    echo -n " # logins/${name}"
-    name_max=1
-    while [ ${name_max} -le ${name_count} ] ; do
-      echo -n " "
-      name_max=$(expr ${name_max} + 1)
-    done
-    echo " # ${login} # ${password} # ${url} # ${otp} # "
+    echo " # logins/${name}"
   done
 }
 
 function process_extracted_vault_bcard() {
-  name_length=$(size_extracted_vault_bcard | tail -1)
-  owner_length="12"
-  card_length="11"
-  expiry_length="13"
-  cvv_length="13"
-  row_length=$(expr ${name_length} + ${owner_length} + ${card_length} + ${expiry_length} + ${cvv_length} + 10)
-  row_length_show=1
   echo ""
   ls -1 ${pwsh_vault}/bcard | while read entry ; do
     name="${entry}"
-    owner="Hidden Owner"
-    card="Hidden Card"
-    expiry="Hidden Expiry"
-    cvv="Encrypted CVV"
-    name_count=$(echo "bcard/${entry}" | wc -m)
-    name_count=$(expr ${name_length} - ${name_count})
-    echo -n " # bcard/${name}"
-    name_max=1
-    while [ ${name_max} -le ${name_count} ] ; do
-      echo -n " "
-      name_max=$(expr ${name_max} + 1)
-    done
-    echo " # ${owner} # ${card} # ${expiry} # ${cvv} # "
+    echo " # bcard/${name}"
   done
 }
 
 function process_extracted_vault_notes() {
-  name_length=$(size_extracted_vault_notes | tail -1)
-  note_length="14"
-  row_length=$(expr ${name_length} + ${note_length} + 4)
-  row_length_show=1
   echo ""
   ls -1 ${pwsh_vault}/notes | while read entry ; do
     name="${entry}"
-    note="Encrypted Note"
-    name_count=$(echo "notes/${entry}" | wc -m)
-    name_count=$(expr ${name_length} - ${name_count})
-    echo -n " # notes/${name}"
-    name_max=1
-    while [ ${name_max} -le ${name_count} ] ; do
-      echo -n " "
-      name_max=$(expr ${name_max} + 1)
-    done
-    echo " # ${note} # "
+    echo " # notes/${name}"
   done
 }
 
@@ -710,10 +619,11 @@ function list_entries_vault() {
   echo ""
   echo "# pwsh-vault-cli ${VERSION}"
   echo ""
-  echo "# Creating Vault List Entries:"
   list_logins_count=$(ls -1 logins/ | wc -l)
   list_bcard_count=$(ls -1 bcard/ | wc -l)
   list_notes_count=$(ls -1 notes/ | wc -l)
+  total_count_vaults=$(expr ${list_logins_count} + ${list_bcard_count} + ${list_notes_count})
+  echo "# Creating Vault List Entries (${total_count_vaults}):"
   if [ ${list_logins_count} -ne 0 ] ; then
     process_extracted_vault_logins
   fi
