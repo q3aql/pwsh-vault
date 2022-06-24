@@ -516,7 +516,6 @@ function import_pwsh_vault() {
 }
 
 function import_pwsh_vault_param() {
-  cd ${pwsh_vault}
   if [ -f "${1}" ] ; then
     echo "# Importing vault from zip file"
     unzip -o "${1}" -d ${pwsh_vault}
