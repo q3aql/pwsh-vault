@@ -51,37 +51,53 @@ install: all
 	cp -f stest $(DESTDIR)$(PREFIX)/stest
 	cp -f pwsh-vault.sh $(DESTDIR)$(PREFIX)/pwsh-vault
 	cp -f pwsh-vault-cli.sh $(DESTDIR)$(PREFIX)/pwsh-vault-cli
+	cp -f pwsh-vault-dl.sh $(DESTDIR)$(PREFIX)/pwsh-vault-dl
 	cp -rf fonts $(DESTDIR)$(PREFIX)/
 	cp -rf icon $(DESTDIR)$(PREFIX)/
 	cp -rf icon/pwsh-vault.desktop /usr/share/applications/
+	cp -rf icon/pwsh-vault-dl.desktop /usr/share/applications/
 	chmod 755 $(DESTDIR)$(PREFIX)/pwsh-vaultm
 	chmod 755 $(DESTDIR)$(PREFIX)/pwsh-vault
 	chmod 755 $(DESTDIR)$(PREFIX)/pwsh-vault-cli
+	chmod 755 $(DESTDIR)$(PREFIX)/pwsh-vault-dl
 	chmod 755 $(DESTDIR)$(PREFIX)/stest
 	rm -f /usr/bin/pwsh-vaultm
 	rm -f /usr/bin/pwsh-vault
 	rm -f /usr/bin/pwsh-vault-cli
+	rm -f /usr/bin/pwsh-vault-dl
 	ln -s $(DESTDIR)$(PREFIX)/pwsh-vault /usr/bin/pwsh-vault
 	ln -s $(DESTDIR)$(PREFIX)/pwsh-vault-cli /usr/bin/pwsh-vault-cli
+	ln -s $(DESTDIR)$(PREFIX)/pwsh-vault-dl /usr/bin/pwsh-vault-dl
 	ln -s $(DESTDIR)$(PREFIX)/pwsh-vaultm /usr/bin/pwsh-vaultm
 
 cygwin:
 	cp -f pwsh-vault-cli.sh /usr/bin/pwsh-vault-cli
+	cp -f pwsh-vault-dl.sh /usr/bin/pwsh-vault
+	cp -f pwsh-vault-dl.sh /usr/bin/pwsh-vault-dl
 	chmod 755 /usr/bin/pwsh-vault-cli
+	chmod 755 /usr/bin/pwsh-vault-dl
+	chmod 755 /usr/bin/pwsh-vault
 	
 termux:
 	cp -f pwsh-vault-cli.sh /data/data/com.termux/files/usr/bin/pwsh-vault-cli
+	cp -f pwsh-vault-dl.sh /data/data/com.termux/files/usr/bin/pwsh-vault-dl
+	cp -f pwsh-vault-dl.sh /data/data/com.termux/files/usr/bin/pwsh-vault
 	chmod 755 /data/data/com.termux/files/usr/bin/pwsh-vault-cli
+	chmod 755 /data/data/com.termux/files/usr/bin/pwsh-vault-dl
+	chmod 755 /data/data/com.termux/files/usr/bin/pwsh-vault
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/pwsh-vaultm\
 		$(DESTDIR)$(PREFIX)/pwsh-vault\
 		$(DESTDIR)$(PREFIX)/pwsh-vault-cli\
+		$(DESTDIR)$(PREFIX)/pwsh-vault-dl\
 		$(DESTDIR)$(PREFIX)/stest\
 	rm -rf $(DESTDIR)$(PREFIX)
 	rm -f /usr/bin/pwsh-vaultm
 	rm -f /usr/bin/pwsh-vault-cli
+	rm -f /usr/bin/pwsh-vault-dl
 	rm -f /usr/bin/pwsh-vault
 	rm -f /usr/share/applications/pwsh-vault.desktop
+	rm -f /usr/share/applications/pwsh-vault-dl.desktop
 
 .PHONY: all options clean dist install uninstall
