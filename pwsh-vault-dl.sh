@@ -610,6 +610,10 @@ function list_entries_vault() {
       count=$(expr ${count} + 1)
     done
   fi
+  if [ ${total_count_vaults} -eq 0 ] ; then
+    dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --msgbox "# No Entries to Show" 0 0
+    pwsh_vault_main
+  fi
   echo "${list_entries_vault_dl}" > ${pwsh_vault_cache_temp}
   bash ${pwsh_vault_cache_temp}
   read pepe

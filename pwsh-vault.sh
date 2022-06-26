@@ -786,23 +786,27 @@ function remove_entry_vault() {
   count_notes=$(ls -1 ${pwsh_vault}/notes/ | wc -l)
   count_bcard=$(ls -1 ${pwsh_vault}/bcard/ | wc -l)
   count_total=$(expr ${count_logins} + ${count_notes} + ${count_bcard})
-  vault_remove_entry=$(list_folders_pwsh_vault | pwsh-vaultm -p "  Remove Entry (${count_total}):")
-  vault_remove_entry=$(echo ${vault_remove_entry} | cut -c5-999)
-  if [ -z "${vault_remove_entry}" ] ; then
-    echo "# Canceled Remove Entry"
+  if [ ${count_total} -eq 0 ] ; then
+      echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
   else
-    if [ -d "${pwsh_vault}/${vault_remove_entry}" ] ; then
-      are_you_sure=$(echo -e "No\nYes" | pwsh-vaultm -p " Selected: ${vault_remove_entry}, Are you sure?:")
-      if [ "${are_you_sure}" == "Yes" ] ; then
-        rm -rf "${pwsh_vault}/${vault_remove_entry}"
-        echo > /dev/null | pwsh-vaultm -p "  Entry ${vault_remove_entry} Removed $(generate_spaces 55)"
-        remove_entry_vault
+    vault_remove_entry=$(list_folders_pwsh_vault | pwsh-vaultm -p "  Remove Entry (${count_total}):")
+    vault_remove_entry=$(echo ${vault_remove_entry} | cut -c5-999)
+    if [ -z "${vault_remove_entry}" ] ; then
+      echo "# Canceled Remove Entry"
+    else
+      if [ -d "${pwsh_vault}/${vault_remove_entry}" ] ; then
+        are_you_sure=$(echo -e "No\nYes" | pwsh-vaultm -p " Selected: ${vault_remove_entry}, Are you sure?:")
+        if [ "${are_you_sure}" == "Yes" ] ; then
+          rm -rf "${pwsh_vault}/${vault_remove_entry}"
+          echo > /dev/null | pwsh-vaultm -p "  Entry ${vault_remove_entry} Removed $(generate_spaces 55)"
+          remove_entry_vault
+        else
+          remove_entry_vault
+        fi
       else
+        echo > /dev/null | pwsh-vaultm -p "  Entry ${vault_remove_entry} does no exist $(generate_spaces 55)"
         remove_entry_vault
       fi
-    else
-      echo > /dev/null | pwsh-vaultm -p "  Entry ${vault_remove_entry} does no exist $(generate_spaces 55)"
-      remove_entry_vault
     fi
   fi
 }
@@ -812,123 +816,127 @@ function edit_entry_vault() {
   count_notes=$(ls -1 ${pwsh_vault}/notes/ | wc -l)
   count_bcard=$(ls -1 ${pwsh_vault}/bcard/ | wc -l)
   count_total=$(expr ${count_logins} + ${count_notes} + ${count_bcard})
-  vault_edit_entry=$(list_folders_pwsh_vault | pwsh-vaultm -p "  Edit Entry (${count_total}):")
-  vault_edit_entry=$(echo ${vault_edit_entry} | cut -c5-999)
-  if [ -z "${vault_edit_entry}" ] ; then
-    echo "# Canceled Edit Entry"
+  if [ ${count_total} -eq 0 ] ; then
+    echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
   else
-    if [ -d "${pwsh_vault}/${vault_edit_entry}" ] ; then
-      echo ""
-      echo "# Selected Entry ${vault_edit_entry}"
-      masterkey_load=$(cat ${pwsh_vault_masterkey})
-      if [ -f "${pwsh_vault}/${vault_edit_entry}/login" ] ; then
-        read_username=$(cat ${pwsh_vault}/${vault_edit_entry}/login | tail -1 | cut -d ";" -f 2)
-        read_userame_dc=$(vault_key_decrypt "${read_username}")
-        name_username=$(echo > /dev/null | pwsh-vaultm -p "爵  Enter Username (Default: ${read_userame_dc}):")
-        if [ ! -z "${name_username}" ] ; then
-          name_username=$(vault_key_encrypt "${name_username}")
-          username_text=$(vault_key_encrypt "Username")
-          echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/login"
-          echo "${username_text};${name_username}" >> "${pwsh_vault}/${vault_edit_entry}/login"
-        fi
-      fi
-      if [ -f "${pwsh_vault}/${vault_edit_entry}/password" ] ; then
-        read_password=$(cat ${pwsh_vault}/${vault_edit_entry}/password | tail -1 | cut -d ";" -f 2)
-        read_password_dc=$(vault_key_decrypt "${read_password}")
-        name_password=$(echo > /dev/null | pwsh-vaultm -p "爵  Enter Password (Default: ${read_password_dc}):")
-        if [ ! -z "${name_password}" ] ; then
-          name_password=$(vault_key_encrypt "${name_password}")
-          password_text=$(vault_key_encrypt "Password")
-          echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/password"
-          echo "${password_text};${name_password}" >> "${pwsh_vault}/${vault_edit_entry}/password"
-        fi
-      fi
-      if [ -f "${pwsh_vault}/${vault_edit_entry}/url" ] ; then
-        read_url=$(cat ${pwsh_vault}/${vault_edit_entry}/url | tail -1 | cut -d ";" -f 2)
-        read_url_dc=$(vault_key_decrypt "${read_url}")
-        name_url=$(echo > /dev/null | pwsh-vaultm -p "爵  Enter URL (Default: ${read_url_dc}):")
-        if [ ! -z "${name_url}" ] ; then
-          name_url=$(vault_key_encrypt "${name_url}")
-          url_text=$(vault_key_encrypt "URL")
-          echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/url"
-          echo "${url_text};${name_url}" >> "${pwsh_vault}/${vault_edit_entry}/url"
-        fi
-      fi
-      if [ -f "${pwsh_vault}/${vault_edit_entry}/otp" ] ; then
-        read_otp=$(cat ${pwsh_vault}/${vault_edit_entry}/otp | tail -1 | cut -d ";" -f 2)
-        read_otp_dc=$(vault_key_decrypt "${read_otp}")
-        name_otp=$(echo > /dev/null | pwsh-vaultm -p "爵  Enter OTP (Default: None):")
-        if [ ! -z "${name_otp}" ] ; then
-          name_otp=$(vault_key_encrypt "${name_otp}")
-          otp_text=$(vault_key_encrypt "OTP")
-          echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/otp"
-          echo "${otp_text};${name_otp}" >> "${pwsh_vault}/${vault_edit_entry}/otp"
-        fi
-      fi
-      if [ -f "${pwsh_vault}/${vault_edit_entry}/owner" ] ; then
-        read_owner=$(cat ${pwsh_vault}/${vault_edit_entry}/owner | tail -1 | cut -d ";" -f 2)
-        read_owner_dc=$(vault_key_decrypt "${read_owner}")
-        read_owner_dc=$(restoreSpaces "${read_owner_dc}")
-        name_owner=$(echo > /dev/null | pwsh-vaultm -p "  Enter Owner (Default: ${read_owner_dc}):")
-        if [ ! -z "${name_owner}" ] ; then
-          name_owner=$(removeSpaces "${name_owner}")
-          name_owner=$(vault_key_encrypt "${name_owner}")
-          owner_text=$(vault_key_encrypt "Owner")
-          echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/owner"
-          echo "${owner_text};${name_owner}" >> "${pwsh_vault}/${vault_edit_entry}/owner"
-        fi
-      fi
-      if [ -f "${pwsh_vault}/${vault_edit_entry}/card" ] ; then
-        read_card=$(cat ${pwsh_vault}/${vault_edit_entry}/card | tail -1 | cut -d ";" -f 2)
-        read_card_dc=$(vault_key_decrypt "${read_card}")
-        name_card=$(echo > /dev/null | pwsh-vaultm -p "  Enter Card Number (Default: ${read_card_dc}):")
-        if [ ! -z "${name_card}" ] ; then
-          name_card=$(vault_key_encrypt "${name_card}")
-          card_text=$(vault_key_encrypt "Card")
-          echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/card"
-          echo "${card_text};${name_card}" >> "${pwsh_vault}/${vault_edit_entry}/card"
-        fi
-      fi
-      if [ -f "${pwsh_vault}/${vault_edit_entry}/expiry" ] ; then
-        read_expiry=$(cat ${pwsh_vault}/${vault_edit_entry}/expiry | tail -1 | cut -d ";" -f 2)
-        read_expiry_dc=$(vault_key_decrypt "${read_expiry}")
-        name_expiry=$(echo > /dev/null | pwsh-vaultm -p "  Enter Expiry Date (Default: ${read_expiry_dc}):")
-        if [ ! -z "${name_expiry}" ] ; then
-          name_expiry=$(vault_key_encrypt "${name_expiry}")
-          expiry_text=$(vault_key_encrypt "Expiry")
-          echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/expiry"
-          echo "${expiry_text};${name_expiry}" >> "${pwsh_vault}/${vault_edit_entry}/expiry"
-        fi
-      fi
-      if [ -f "${pwsh_vault}/${vault_edit_entry}/cvv" ] ; then
-        read_cvv=$(cat ${pwsh_vault}/${vault_edit_entry}/cvv | tail -1 | cut -d ";" -f 2)
-        read_cvv_dc=$(vault_key_decrypt "${read_cvv}")
-        name_cvv=$(echo > /dev/null | pwsh-vaultm -p "  Enter CVV (Default: ${read_cvv_dc}):")
-        if [ ! -z "${name_cvv}" ] ; then
-          name_cvv=$(vault_key_encrypt "${name_cvv}")
-          cvv_text=$(vault_key_encrypt "cvv")
-          echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/cvv"
-          echo "${cvv_text};${name_cvv}" >> "${pwsh_vault}/${vault_edit_entry}/cvv"
-        fi
-      fi
-      if [ -f "${pwsh_vault}/${vault_edit_entry}/note" ] ; then
-        read_note=$(cat ${pwsh_vault}/${vault_edit_entry}/note | tail -1 | cut -d ";" -f 2)
-        read_note_dc=$(vault_key_decrypt "${read_note}")
-        read_note_dc=$(restoreSpaces "${read_note_dc}")
-        name_note=$(echo > /dev/null | pwsh-vaultm -p "  Enter Note (Default: ${read_note_dc}):")
-        if [ ! -z "${name_note}" ] ; then
-          name_note=$(removeSpaces "${name_note}")
-          name_note=$(vault_key_encrypt "${name_note}")
-          note_text=$(vault_key_encrypt "note")
-          echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/note"
-          echo "${note_text};${name_note}" >> "${pwsh_vault}/${vault_edit_entry}/note"
-        fi
-      fi
-      echo > /dev/null | pwsh-vaultm -p "  ENTRY EDITED: ${vault_edit_entry} $(generate_spaces 60)"
-      edit_entry_vault
+    vault_edit_entry=$(list_folders_pwsh_vault | pwsh-vaultm -p "  Edit Entry (${count_total}):")
+    vault_edit_entry=$(echo ${vault_edit_entry} | cut -c5-999)
+    if [ -z "${vault_edit_entry}" ] ; then
+      echo "# Canceled Edit Entry"
     else
-      echo "# Entry ${vault_edit_entry} does no exist"
-      edit_entry_vault
+      if [ -d "${pwsh_vault}/${vault_edit_entry}" ] ; then
+        echo ""
+        echo "# Selected Entry ${vault_edit_entry}"
+        masterkey_load=$(cat ${pwsh_vault_masterkey})
+        if [ -f "${pwsh_vault}/${vault_edit_entry}/login" ] ; then
+          read_username=$(cat ${pwsh_vault}/${vault_edit_entry}/login | tail -1 | cut -d ";" -f 2)
+          read_userame_dc=$(vault_key_decrypt "${read_username}")
+          name_username=$(echo > /dev/null | pwsh-vaultm -p "爵  Enter Username (Default: ${read_userame_dc}):")
+          if [ ! -z "${name_username}" ] ; then
+            name_username=$(vault_key_encrypt "${name_username}")
+            username_text=$(vault_key_encrypt "Username")
+            echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/login"
+            echo "${username_text};${name_username}" >> "${pwsh_vault}/${vault_edit_entry}/login"
+          fi
+        fi
+        if [ -f "${pwsh_vault}/${vault_edit_entry}/password" ] ; then
+          read_password=$(cat ${pwsh_vault}/${vault_edit_entry}/password | tail -1 | cut -d ";" -f 2)
+          read_password_dc=$(vault_key_decrypt "${read_password}")
+          name_password=$(echo > /dev/null | pwsh-vaultm -p "爵  Enter Password (Default: ${read_password_dc}):")
+          if [ ! -z "${name_password}" ] ; then
+            name_password=$(vault_key_encrypt "${name_password}")
+            password_text=$(vault_key_encrypt "Password")
+            echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/password"
+            echo "${password_text};${name_password}" >> "${pwsh_vault}/${vault_edit_entry}/password"
+          fi
+        fi
+        if [ -f "${pwsh_vault}/${vault_edit_entry}/url" ] ; then
+          read_url=$(cat ${pwsh_vault}/${vault_edit_entry}/url | tail -1 | cut -d ";" -f 2)
+          read_url_dc=$(vault_key_decrypt "${read_url}")
+          name_url=$(echo > /dev/null | pwsh-vaultm -p "爵  Enter URL (Default: ${read_url_dc}):")
+          if [ ! -z "${name_url}" ] ; then
+            name_url=$(vault_key_encrypt "${name_url}")
+            url_text=$(vault_key_encrypt "URL")
+            echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/url"
+            echo "${url_text};${name_url}" >> "${pwsh_vault}/${vault_edit_entry}/url"
+          fi
+        fi
+        if [ -f "${pwsh_vault}/${vault_edit_entry}/otp" ] ; then
+          read_otp=$(cat ${pwsh_vault}/${vault_edit_entry}/otp | tail -1 | cut -d ";" -f 2)
+          read_otp_dc=$(vault_key_decrypt "${read_otp}")
+          name_otp=$(echo > /dev/null | pwsh-vaultm -p "爵  Enter OTP (Default: None):")
+          if [ ! -z "${name_otp}" ] ; then
+            name_otp=$(vault_key_encrypt "${name_otp}")
+            otp_text=$(vault_key_encrypt "OTP")
+            echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/otp"
+            echo "${otp_text};${name_otp}" >> "${pwsh_vault}/${vault_edit_entry}/otp"
+          fi
+        fi
+        if [ -f "${pwsh_vault}/${vault_edit_entry}/owner" ] ; then
+          read_owner=$(cat ${pwsh_vault}/${vault_edit_entry}/owner | tail -1 | cut -d ";" -f 2)
+          read_owner_dc=$(vault_key_decrypt "${read_owner}")
+          read_owner_dc=$(restoreSpaces "${read_owner_dc}")
+          name_owner=$(echo > /dev/null | pwsh-vaultm -p "  Enter Owner (Default: ${read_owner_dc}):")
+          if [ ! -z "${name_owner}" ] ; then
+            name_owner=$(removeSpaces "${name_owner}")
+            name_owner=$(vault_key_encrypt "${name_owner}")
+            owner_text=$(vault_key_encrypt "Owner")
+            echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/owner"
+            echo "${owner_text};${name_owner}" >> "${pwsh_vault}/${vault_edit_entry}/owner"
+          fi
+        fi
+        if [ -f "${pwsh_vault}/${vault_edit_entry}/card" ] ; then
+          read_card=$(cat ${pwsh_vault}/${vault_edit_entry}/card | tail -1 | cut -d ";" -f 2)
+          read_card_dc=$(vault_key_decrypt "${read_card}")
+          name_card=$(echo > /dev/null | pwsh-vaultm -p "  Enter Card Number (Default: ${read_card_dc}):")
+          if [ ! -z "${name_card}" ] ; then
+            name_card=$(vault_key_encrypt "${name_card}")
+            card_text=$(vault_key_encrypt "Card")
+            echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/card"
+            echo "${card_text};${name_card}" >> "${pwsh_vault}/${vault_edit_entry}/card"
+          fi
+        fi
+        if [ -f "${pwsh_vault}/${vault_edit_entry}/expiry" ] ; then
+          read_expiry=$(cat ${pwsh_vault}/${vault_edit_entry}/expiry | tail -1 | cut -d ";" -f 2)
+          read_expiry_dc=$(vault_key_decrypt "${read_expiry}")
+          name_expiry=$(echo > /dev/null | pwsh-vaultm -p "  Enter Expiry Date (Default: ${read_expiry_dc}):")
+          if [ ! -z "${name_expiry}" ] ; then
+            name_expiry=$(vault_key_encrypt "${name_expiry}")
+            expiry_text=$(vault_key_encrypt "Expiry")
+            echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/expiry"
+            echo "${expiry_text};${name_expiry}" >> "${pwsh_vault}/${vault_edit_entry}/expiry"
+          fi
+        fi
+        if [ -f "${pwsh_vault}/${vault_edit_entry}/cvv" ] ; then
+          read_cvv=$(cat ${pwsh_vault}/${vault_edit_entry}/cvv | tail -1 | cut -d ";" -f 2)
+          read_cvv_dc=$(vault_key_decrypt "${read_cvv}")
+          name_cvv=$(echo > /dev/null | pwsh-vaultm -p "  Enter CVV (Default: ${read_cvv_dc}):")
+          if [ ! -z "${name_cvv}" ] ; then
+            name_cvv=$(vault_key_encrypt "${name_cvv}")
+            cvv_text=$(vault_key_encrypt "cvv")
+            echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/cvv"
+            echo "${cvv_text};${name_cvv}" >> "${pwsh_vault}/${vault_edit_entry}/cvv"
+          fi
+        fi
+        if [ -f "${pwsh_vault}/${vault_edit_entry}/note" ] ; then
+          read_note=$(cat ${pwsh_vault}/${vault_edit_entry}/note | tail -1 | cut -d ";" -f 2)
+          read_note_dc=$(vault_key_decrypt "${read_note}")
+          read_note_dc=$(restoreSpaces "${read_note_dc}")
+          name_note=$(echo > /dev/null | pwsh-vaultm -p "  Enter Note (Default: ${read_note_dc}):")
+          if [ ! -z "${name_note}" ] ; then
+            name_note=$(removeSpaces "${name_note}")
+            name_note=$(vault_key_encrypt "${name_note}")
+            note_text=$(vault_key_encrypt "note")
+            echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/note"
+            echo "${note_text};${name_note}" >> "${pwsh_vault}/${vault_edit_entry}/note"
+          fi
+        fi
+        echo > /dev/null | pwsh-vaultm -p "  ENTRY EDITED: ${vault_edit_entry} $(generate_spaces 60)"
+        edit_entry_vault
+      else
+        echo "# Entry ${vault_edit_entry} does no exist"
+        edit_entry_vault
+      fi
     fi
   fi
 }

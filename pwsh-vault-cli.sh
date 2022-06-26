@@ -635,6 +635,10 @@ function list_entries_vault() {
   if [ ${list_notes_count} -ne 0 ] ; then
     process_extracted_vault_notes
   fi
+  if [ ${total_count_vaults} -eq 0 ] ; then
+    echo ""
+    echo "# No Entries to Show"
+  fi
   echo ""
   echo -n "# Press enter key to continue " ; read enter_continue
 }
@@ -758,9 +762,13 @@ function remove_entry_vault() {
       echo " * bcard/${card}"
     done
   fi
-  if [ ${count_total} -ne 0 ] ; then
+  if [ ${count_total} -eq 0 ] ; then
+    echo "# No Entries to Show"
     echo ""
+    echo -n "# Press enter key to continue " ; read enter_continue
+    pwsh_vault_main
   fi
+  echo ""
   echo -n "# Type entry to remove (Default: Return): " ; read vault_remove_entry
   if [ -z "${vault_remove_entry}" ] ; then
     echo "# Canceled Remove Entry"
@@ -818,9 +826,13 @@ function edit_entry_vault() {
       echo " * bcard/${card}"
     done
   fi
-  if [ ${count_total} -ne 0 ] ; then
+  if [ ${count_total} -eq 0 ] ; then
+    echo "# No Entries to Show"
     echo ""
+    echo -n "# Press enter key to continue " ; read enter_continue
+    pwsh_vault_main
   fi
+  echo ""
   echo -n "# Type entry to edit (Default: Return): " ; read vault_edit_entry
   if [ -z "${vault_edit_entry}" ] ; then
     echo "# Canceled Edit Entry"
