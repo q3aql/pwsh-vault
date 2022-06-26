@@ -941,7 +941,7 @@ function search_entries_vault() {
       if [ ${lines_read} -eq 0 ] ; then
         dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --msgbox "# No Entries to Show" 0 0
       else
-        list_entries_vault_dl="dialog --stdout --menu '# Result Vault List Entries: $(generate_spaces 15)' 0 0 0"
+        list_entries_vault_dl="dialog --stdout --menu '# Result Vault List Entries:' 0 0 0"
         count=1
         for show in $(cat ${pwsh_vault_cache_logins}) ; do
           list_entries_vault_dl="${list_entries_vault_dl} ${count} \"${show}\""
