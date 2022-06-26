@@ -692,12 +692,16 @@ function list_entries_vault() {
   list_bcard_count=$(ls -1 bcard/ | wc -l)
   list_notes_count=$(ls -1 notes/ | wc -l)
   total_count_vaults=$(expr ${list_logins_count} + ${list_bcard_count} + ${list_notes_count})
-  echo ""
-  echo "# pwsh-vault ${VERSION}"
-  echo ""
-  echo "# Creating Vault List Entries"
-  echo ""
-  run_all_list_process_extracted_vault | pwsh-vaultm -p "  List Entries (${total_count_vaults}):"
+  if [ ${total_count_vaults} -eq 0 ] ; then
+    echo > /dev/null | pwsh-vaultm -p "  No Entries to Show $(generate_spaces 70)"
+  else
+    echo ""
+    echo "# pwsh-vault ${VERSION}"
+    echo ""
+    echo "# Creating Vault List Entries"
+    echo ""
+    run_all_list_process_extracted_vault | pwsh-vaultm -p "  List Entries (${total_count_vaults}):"
+  fi
 }
 
 function change_masterkey_vault() {
