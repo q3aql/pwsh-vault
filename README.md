@@ -4,16 +4,16 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
 ### Dependencies:
   
   * **Arch Linux:**
-    * `sudo pacman -S git gcc make coreutils sed expat zip unzip freetype2 libxinerama brotli fontconfig libbsd libmd libpng libx11 libxau libxdmcp libxft libxrender` 
+    * `sudo pacman -S git gcc make coreutils sed expat zip unzip dialog freetype2 libxinerama brotli fontconfig libbsd libmd libpng libx11 libxau libxdmcp libxft libxrender` 
 
   * **Debian/Ubuntu:**
-    * `sudo apt install git gcc make coreutils sed zip unzip libexpat1-dev libfreetype-dev libxinerama-dev x11-utils libxft-dev libfreetype6-dev libfontconfig1-dev libpng-dev libbrotli-dev libxrender-dev libmd-dev libxau-dev libbsd-dev libxdmcp-dev`
+    * `sudo apt install git gcc make coreutils sed zip unzip dialog libexpat1-dev libfreetype-dev libxinerama-dev x11-utils libxft-dev libfreetype6-dev libfontconfig1-dev libpng-dev libbrotli-dev libxrender-dev libmd-dev libxau-dev libbsd-dev libxdmcp-dev`
 
   * **Windows Cygwin ([apt-cyg](https://github.com/transcode-open/apt-cyg)):**
-    * `apt-cyg install git make coreutils sed zip unzip`
+    * `apt-cyg install git make coreutils sed zip unzip dialog`
     
   * **Android ([Termux](https://termux.com/)):**
-    * `pkg install git make coreutils sed zip unzip`
+    * `pkg install git make coreutils sed zip unzip dialog`
 
 ### Build and install (Unix/Linux Posix):
 
@@ -53,6 +53,15 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
 
 <img src="examples/pwsh-vault.png" /> 
 
+
+### NCURSES Version:
+
+  ```shell
+  pwsh-vault-dl
+  ```
+
+<img src="examples/pwsh-vault-dl.png" /> 
+
  
 ### CLI Version:
 
@@ -64,7 +73,7 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
 
 
   ```shell
-  pwsh-vault (or pwsh-vault-cli) --help
+  pwsh-vault (or pwsh-vault-cli/dl) --help
   ```
 
 <img src="examples/pwsh-vault-help.png" /> 
