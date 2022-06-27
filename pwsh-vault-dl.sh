@@ -5,7 +5,7 @@
 # Author: q3aql                                               #
 # Contact: q3aql@duck.com                                     #
 # License: GPL v2.0                                           #
-# Last-Change: 26-06-20222                                    #
+# Last-Change: 27-06-20222                                    #
 # #############################################################
 VERSION="0.1"
 
@@ -161,7 +161,8 @@ function gen_password_dl() {
 }
 
 function generate_password_menu() {
-  clear
+  echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+  --progressbox "# Loading Password Generator \\" 0 0
   size_password=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --inputbox "# Set the password size (Default: 20):" 0 0)
   if [ -z "${size_password}" ] ; then
     size_password=20
@@ -174,6 +175,8 @@ function generate_password_menu() {
 function init_masterkey() {
   if [ -f ${pwsh_vault_masterkey} ] ; then
     read_masterkey_vault=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --passwordbox "# Enter MasterKey Vault:" 0 0)
+    echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+  --progressbox "# Checking The Entered Masterkey \\" 0 0
     read_masterkey=$(cat ${pwsh_vault_masterkey} | cut -d ";" -f 2)
     decrypt_masterkey=$(vault_key_decrypt "${read_masterkey}")
     if [ "${decrypt_masterkey}" == "${read_masterkey_vault}" ] ; then
@@ -185,6 +188,8 @@ function init_masterkey() {
   else
     masterkey_input=$(dialog --stdout --title "# A masterkey has not yet been defined" --passwordbox "# Enter New MasterKey:" 0 0)
     masterkey_reinput=$(dialog --stdout --title "# A masterkey has not yet been defined" --passwordbox "# Re-Enter New MasterKey:" 0 0)
+    echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+  --progressbox "# Checking The Entered Masterkey \\" 0 0
     if [ "${masterkey_input}" == "${masterkey_reinput}" ] ; then
       echo ""
       masterkey_name=$(vault_key_encrypt "Masterkey")
@@ -199,7 +204,8 @@ function init_masterkey() {
 }
 
 function create_login_vault_entry() {
-  clear
+  echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+  --progressbox "# Loading Section for Create Entry \\" 0 0
   name_login_entry=0
   masterkey_load=$(cat ${pwsh_vault_masterkey})
   while [ ${name_login_entry} -eq 0 ] ; do
@@ -261,6 +267,8 @@ function create_login_vault_entry() {
       otp_entry=1
     fi
   done
+  echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+  --progressbox "# Checking New Created Entry \\" 0 0
   name_username=$(vault_key_decrypt "${name_username}")
   name_password=$(vault_key_decrypt "${name_password}")
   name_url=$(vault_key_decrypt "${name_url}")
@@ -277,7 +285,6 @@ function create_login_vault_entry() {
 }
 
 function create_bcard_vault_entry() {
-  clear
   name_bcard_entry=0
   masterkey_load=$(cat ${pwsh_vault_masterkey})
   while [ ${name_bcard_entry} -eq 0 ] ; do
@@ -350,7 +357,6 @@ function create_bcard_vault_entry() {
 }
 
 function create_note_vault_entry() {
-  clear
   name_note_entry=0
   masterkey_load=$(cat ${pwsh_vault_masterkey})
   while [ ${name_note_entry} -eq 0 ] ; do
@@ -384,7 +390,6 @@ function create_note_vault_entry() {
 }
 
 function create_entries_menu() {
-  clear
   new_entry=$(dialog --stdout --menu "# pwsh-vault-dl ${VERSION}" \
   0 0 0 l "Login/Website Entry" b "Credit/Bank Card Entry" n "Note Entry" r "Back")
   if [ "${new_entry}" == "l" ] ; then
@@ -502,7 +507,6 @@ function import_pwsh_vault_param() {
 }
 
 function pwsh_vault_about() {
-    clear
     dialog --title "# pwsh-vault-dl ${VERSION} | About" \
     --msgbox "# Software: pwsh-vault-dl ${VERSION}\n# Contact: q3aql <q3aql@duck.com>\n# LICENSE: GPLv2.0" 0 0
 }
@@ -582,7 +586,8 @@ function check_corrupted_entry_vault() {
 }
 
 function list_entries_vault() {
-  clear
+  echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+  --progressbox "# Loading Vault List Entries \\" 0 0
   cd ${pwsh_vault}
   count=1
   list_logins_count=$(ls -1 logins/ | wc -l)
@@ -620,7 +625,8 @@ function list_entries_vault() {
 }
 
 function change_masterkey_vault() {
-  clear
+  echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+  --progressbox "# Loading Section For Change MasterKey \\" 0 0
   load_masterkey=$(cat ${pwsh_vault_masterkey} | cut -d ";" -f 2)
   masterkey_loaded=$(vault_key_decrypt "${load_masterkey}")
   count_logins=$(ls -1 ${pwsh_vault}/logins/ | wc -l)
@@ -692,11 +698,12 @@ function change_masterkey_vault() {
 }
 
 function remove_entry_vault() {
+  echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+  --progressbox "# Loading Vault List Entries \\" 0 0
   count_logins=$(ls -1 ${pwsh_vault}/logins/ | wc -l)
   count_notes=$(ls -1 ${pwsh_vault}/notes/ | wc -l)
   count_bcard=$(ls -1 ${pwsh_vault}/bcard/ | wc -l)
   count_total=$(expr ${count_logins} + ${count_notes} + ${count_bcard})
-  clear
   list_entries_vault_dl="dialog --stdout --menu '# Vault List Entries (${count_total}):' 0 0 0"
   if [ ${count_logins} -ne 0 ] ; then
     list_logins=$(ls -1 ${pwsh_vault}/logins/)
@@ -730,6 +737,8 @@ function remove_entry_vault() {
       dialog --title "# Selected Entry ${vault_remove_entry}" --yesno "# Are you sure?" 0 0
       are_you_sure=$?
       if [ "${are_you_sure}" == "0" ] ; then
+        echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+        --progressbox "# Removing ${vault_remove_entry} Entry \\" 0 0
         rm -rf "${pwsh_vault}/${vault_remove_entry}"
         dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --msgbox "# Entry ${vault_remove_entry} Removed" 0 0
         remove_entry_vault
@@ -744,11 +753,12 @@ function remove_entry_vault() {
 }
 
 function edit_entry_vault() {
+  echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+  --progressbox "# Loading Vault List Entries \\" 0 0
   count_logins=$(ls -1 ${pwsh_vault}/logins/ | wc -l)
   count_notes=$(ls -1 ${pwsh_vault}/notes/ | wc -l)
   count_bcard=$(ls -1 ${pwsh_vault}/bcard/ | wc -l)
   count_total=$(expr ${count_logins} + ${count_notes} + ${count_bcard})
-  clear
   list_entries_vault_dl="dialog --stdout --menu '# Vault List Entries (${count_total}):' 0 0 0"
   if [ ${count_logins} -ne 0 ] ; then
     list_logins=$(ls -1 ${pwsh_vault}/logins/)
@@ -778,8 +788,8 @@ function edit_entry_vault() {
     echo > /dev/null
   else
     if [ -d "${pwsh_vault}/${vault_edit_entry}" ] ; then
-      echo ""
-      echo "# Selected Entry ${vault_edit_entry}"
+      echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+      --progressbox "# Preparing For ${pwsh_vault}/${vault_edit_entry} Editing \\" 0 0
       masterkey_load=$(cat ${pwsh_vault_masterkey})
       if [ -f "${pwsh_vault}/${vault_edit_entry}/login" ] ; then
         read_username=$(cat ${pwsh_vault}/${vault_edit_entry}/login | tail -1 | cut -d ";" -f 2)
@@ -894,7 +904,8 @@ function edit_entry_vault() {
 }
 
 function search_entries_vault() {
-  clear
+  echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+  --progressbox "# Loading Search List Entries \\" 0 0
   cd ${pwsh_vault}
   rm -rf ${pwsh_vault_cache_logins}
   rm -rf ${pwsh_vault_cache_logins_otp}
@@ -1406,7 +1417,6 @@ function reset_config() {
 function pwsh_vault_main() {
   vault_main_init=0
   while [ ${vault_main_init} -eq 0 ] ;do
-    clear
     vault_main_option=$(dialog --stdout --menu "# pwsh-vault-dl ${VERSION}" \
     0 0 0 c "Create Entry" e "Edit Entry" s "Search Entry" l "List Entry" \
     r "Remove Entry" m "Change MasterKey" g "Generate Password" x "Export Vault" \
