@@ -940,8 +940,9 @@ function search_entries_vault() {
   0 0 0 l "Search Login/Website Entry" o "Search Login/Website Entry (Show OTP)" \
   b "Search Credit/Bank Card Entry" n "Search Note Entry" r "Back")
   if [ "${search_entry}" == "l" ] ; then
-    echo ""
     string_search=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 40)" --inputbox "# Type a string to search:" 0 0)
+    echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+    --progressbox "# Applying Search Filter To Entries \\" 0 0
     if [ -z "${string_search}" ] ; then
       rm -rf ${pwsh_vault_cache_temp}
       touch ${pwsh_vault_cache_temp}
@@ -963,6 +964,8 @@ function search_entries_vault() {
         if [ -z "${search_show_entry}" ] ; then
           echo > /dev/null
         else
+          echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+          --progressbox "# Decrypting Entry Number ${search_show_entry} \\" 0 0
           expr ${search_show_entry} + 1 &> /dev/null
           error=$?
           if [ ${error} -eq 0 ] ; then
@@ -1025,6 +1028,8 @@ function search_entries_vault() {
         if [ -z "${search_show_entry}" ] ; then
           echo > /dev/null
         else
+          echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+          --progressbox "# Decrypting Entry Number ${search_show_entry} \\" 0 0
           expr ${search_show_entry} + 1 &> /dev/null
           error=$?
           if [ ${error} -eq 0 ] ; then
@@ -1069,6 +1074,8 @@ function search_entries_vault() {
     fi
   elif [ "${search_entry}" == "o" ] ; then
     string_search=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 40)" --inputbox "# Type a string to search:" 0 0)
+    echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+    --progressbox "# Applying Search Filter To Entries \\" 0 0
     if [ -z "${string_search}" ] ; then
       rm -rf ${pwsh_vault_cache_temp}
       touch ${pwsh_vault_cache_temp}
@@ -1091,6 +1098,8 @@ function search_entries_vault() {
         if [ -z "${search_show_entry}" ] ; then
           echo > /dev/null
         else
+          echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+          --progressbox "# Decrypting Entry Number ${search_show_entry} \\" 0 0
           expr ${search_show_entry} + 1 &> /dev/null
           error=$?
           if [ ${error} -eq 0 ] ; then
@@ -1150,6 +1159,8 @@ function search_entries_vault() {
         if [ -z "${search_show_entry}" ] ; then
           echo > /dev/null
         else
+          echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+          --progressbox "# Decrypting Entry Number ${search_show_entry} \\" 0 0
           expr ${search_show_entry} + 1 &> /dev/null
           error=$?
           if [ ${error} -eq 0 ] ; then
@@ -1190,6 +1201,8 @@ function search_entries_vault() {
     fi
   elif [ "${search_entry}" == "b" ] ; then
     string_search=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 40)" --inputbox "# Type a string to search:" 0 0)
+    echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+    --progressbox "# Applying Search Filter To Entries \\" 0 0
     if [ -z "${string_search}" ] ; then
       rm -rf ${pwsh_vault_cache_temp}
       touch ${pwsh_vault_cache_temp}
@@ -1211,6 +1224,8 @@ function search_entries_vault() {
         if [ -z "${search_show_entry}" ] ; then
           echo > /dev/null
         else
+          echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+          --progressbox "# Decrypting Entry Number ${search_show_entry} \\" 0 0
           expr ${search_show_entry} + 1 &> /dev/null
           error=$?
           if [ ${error} -eq 0 ] ; then
@@ -1268,6 +1283,8 @@ function search_entries_vault() {
         if [ -z "${search_show_entry}" ] ; then
           echo > /dev/null
         else
+          echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+          --progressbox "# Decrypting Entry Number ${search_show_entry} \\" 0 0
           expr ${search_show_entry} + 1 &> /dev/null
           error=$?
           if [ ${error} -eq 0 ] ; then
@@ -1307,6 +1324,8 @@ function search_entries_vault() {
     fi
   elif [ "${search_entry}" == "n" ] ; then
     string_search=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 40)" --inputbox "# Type a string to search:" 0 0)
+    echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+    --progressbox "# Applying Search Filter To Entries \\" 0 0
     if [ -z "${string_search}" ] ; then
       rm -rf ${pwsh_vault_cache_temp}
       touch ${pwsh_vault_cache_temp}
@@ -1328,6 +1347,8 @@ function search_entries_vault() {
         if [ -z "${search_show_entry}" ] ; then
           echo > /dev/null
         else
+          echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+          --progressbox "# Decrypting Entry Number ${search_show_entry} \\" 0 0
           expr ${search_show_entry} + 1 &> /dev/null
           error=$?
           if [ ${error} -eq 0 ] ; then
@@ -1374,6 +1395,8 @@ function search_entries_vault() {
         if [ -z "${search_show_entry}" ] ; then
           echo > /dev/null
         else
+          echo > /dev/null | dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+          --progressbox "# Decrypting Entry Number ${search_show_entry} \\" 0 0
           expr ${search_show_entry} + 1 &> /dev/null
           error=$?
           if [ ${error} -eq 0 ] ; then
