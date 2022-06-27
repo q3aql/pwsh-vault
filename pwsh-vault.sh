@@ -1263,6 +1263,28 @@ function pwsh_vault_main() {
   done
 }
 
+function check_output_display() {
+  if [ -f /usr/bin/pwsh-vaultm ] ; then
+    display=0
+    if [ -z "${XDG_SESSION_TYPE}" ] ; then
+      display=1
+    elif [ "${XDG_SESSION_TYPE}" == "tty" ] ; then
+      display=1
+    elif [ "${XDG_SESSION_TYPE}" == "x11" ] ; then
+      display=0
+    elif [ "${XDG_SESSION_TYPE}" == "wayland" ] ; then
+      display=0
+    fi
+    if [ "${display}" == "1" ] ; then
+      pwsh-vault-dl
+      exit
+    fi
+  else
+    pwsh-vault-dl
+    exit
+  fi
+}
+
 # Create directories & run script
 mkdir -p ${pwsh_vault}
 mkdir -p ${pwsh_vault}/notes
@@ -1295,6 +1317,7 @@ elif [ "${1}" == "--gen-password" ] ; then
     generate_password "${2}" "param"
   fi
 else
+  check_output_display
   init_masterkey
   pwsh_vault_main
 fi
