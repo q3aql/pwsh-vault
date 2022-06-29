@@ -120,44 +120,64 @@ function vault_key_decrypt() {
 function generate_password() {
   if [ -z "${1}" ] ; then
     default_long_password=20
-  elif [ ${1} -lt 8 ] ; then
-    default_long_password=10
   else
-    default_long_password=${1}
-  fi
-  count_char_password=1
-  current_password=""
-  echo ""
-  echo "# Generating Random Password"
-  while [ ${count_char_password} -le ${default_long_password} ] ; do
-    current_char=$(generate_codes "password")
-    current_password="${current_password}${current_char}"
-    count_char_password=$(expr ${count_char_password} + 1)
-  done
-  echo ""
-  echo "# PASSWORD: ${current_password}"
-  echo ""
-  if [ "${2}" != "param" ] ; then
-    echo -n "# Press enter key to continue " ; read enter_continue
+    expr ${1} + 1 &> /dev/null
+    num_error=$?
+    if [ ${num_error} -ne 0 ] ; then
+      size_pass=20
+    else
+      size_pass="${1}"
+    fi
+    # Create password
+    if [ ${size_pass} -lt 8 ] ; then
+      default_long_password=10
+    else
+      default_long_password=${size_pass}
+    fi
+    count_char_password=1
+    current_password=""
+    echo ""
+    echo "# Generating Random Password"
+    while [ ${count_char_password} -le ${default_long_password} ] ; do
+      current_char=$(generate_codes "password")
+      current_password="${current_password}${current_char}"
+      count_char_password=$(expr ${count_char_password} + 1)
+    done
+    echo ""
+    echo "# PASSWORD: ${current_password}"
+    echo ""
+    if [ "${2}" != "param" ] ; then
+      echo -n "# Press enter key to continue " ; read enter_continue
+    fi
   fi
 }
 
 function gen_password_dl() {
   if [ -z "${1}" ] ; then
     default_long_password=20
-  elif [ ${1} -lt 8 ] ; then
-    default_long_password=10
   else
-    default_long_password=${1}
+    expr ${1} + 1 &> /dev/null
+    num_error=$?
+    if [ ${num_error} -ne 0 ] ; then
+      size_pass=20
+    else
+      size_pass="${1}"
+    fi
+    # Create password
+    if [ ${size_pass} -lt 8 ] ; then
+      default_long_password=10
+    else
+      default_long_password=${size_pass}
+    fi
+    count_char_password=1
+    current_password=""
+    while [ ${count_char_password} -le ${default_long_password} ] ; do
+      current_char=$(generate_codes "password")
+      current_password="${current_password}${current_char}"
+      count_char_password=$(expr ${count_char_password} + 1)
+    done
+    echo "${current_password}"
   fi
-  count_char_password=1
-  current_password=""
-  while [ ${count_char_password} -le ${default_long_password} ] ; do
-    current_char=$(generate_codes "password")
-    current_password="${current_password}${current_char}"
-    count_char_password=$(expr ${count_char_password} + 1)
-  done
-  echo "${current_password}"
 }
 
 function generate_password_menu() {
