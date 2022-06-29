@@ -1057,6 +1057,8 @@ function search_entries_vault() {
             expr ${search_show_entry} + 1 &> /dev/null
             error=$?
             if [ ${error} -eq 0 ] ; then
+              echo ""
+              echo "# Decrypting Entry Number ${search_show_entry}"
               result=$(cat ${pwsh_vault_cache_logins} | head -${search_show_entry} 2>/dev/null | tail -1 | cut -d "," -f 1 | cut -d "/" -f 2)
               corrupted_result=$(check_corrupted_entry_vault ${result} logins)
               if [ ${corrupted_result} -eq 0 ] ; then
@@ -1073,7 +1075,6 @@ function search_entries_vault() {
                 else
                   otp_decrypt="Yes"
                 fi
-                echo ""
                 echo "* Name Entry: logins/${result}"
                 echo "* Login: ${username_decrypt}"
                 echo "* Password: ${password_decrypt}"
@@ -1081,7 +1082,6 @@ function search_entries_vault() {
                 echo "* OTP: ${otp_decrypt}"
                 echo ""
               else
-                echo ""
                 echo "# Entry logins/${result} CORRUPTED"
                 echo ""
               fi
@@ -1134,6 +1134,8 @@ function search_entries_vault() {
             expr ${search_show_entry} + 1 &> /dev/null
             error=$?
             if [ ${error} -eq 0 ] ; then
+              echo ""
+              echo "# Decrypting Entry Number ${search_show_entry}"
               result=$(cat ${pwsh_vault_cache_logins} | head -${search_show_entry} 2>/dev/null | tail -1 | cut -d "," -f 1 | cut -d "/" -f 2)
               corrupted_result=$(check_corrupted_entry_vault ${result} logins)
               if [ ${corrupted_result} -eq 0 ] ; then
@@ -1150,7 +1152,6 @@ function search_entries_vault() {
                 else
                   otp_decrypt="Yes"
                 fi
-                echo ""
                 echo "* Name Entry: logins/${result}"
                 echo "* Login: ${username_decrypt}"
                 echo "* Password: ${password_decrypt}"
@@ -1158,7 +1159,6 @@ function search_entries_vault() {
                 echo "* OTP: ${otp_decrypt}"
                 echo ""
               else
-                echo ""
                 echo "# Entry logins/${result} CORRUPTED"
                 echo ""
               fi
@@ -1217,6 +1217,8 @@ function search_entries_vault() {
             expr ${search_show_entry} + 1 &> /dev/null
             error=$?
             if [ ${error} -eq 0 ] ; then
+              echo ""
+              echo "# Decrypting Entry Number ${search_show_entry}"
               result=$(cat ${pwsh_vault_cache_logins} | head -${search_show_entry} 2>/dev/null | tail -1 | cut -d "," -f 1 | cut -d "/" -f 2)
               corrupted_result=$(check_corrupted_entry_vault ${result} logins)
               if [ ${corrupted_result} -eq 0 ] ; then
@@ -1228,7 +1230,6 @@ function search_entries_vault() {
                 url_decrypt=$(vault_key_decrypt "${url_decrypt}")
                 otp_decrypt=$(cat logins/${result}/otp | tail -1 | cut -d ";" -f 2)
                 otp_decrypt=$(vault_key_decrypt "${otp_decrypt}")
-                echo ""
                 echo "* Name Entry: logins/${result}"
                 echo "* Login: ${username_decrypt}"
                 echo "* Password: ${password_decrypt}"
@@ -1236,7 +1237,6 @@ function search_entries_vault() {
                 echo "* OTP: ${otp_decrypt}"
                 echo ""
               else
-                echo ""
                 echo "# Entry logins/${result} CORRUPTED"
                 echo ""
               fi
@@ -1291,6 +1291,8 @@ function search_entries_vault() {
             expr ${search_show_entry} + 1 &> /dev/null
             error=$?
             if [ ${error} -eq 0 ] ; then
+              echo ""
+              echo "# Decrypting Entry Number ${search_show_entry}"
               result=$(cat ${pwsh_vault_cache_logins} | head -${search_show_entry} 2>/dev/null | tail -1 | cut -d "," -f 1 | cut -d "/" -f 2)
               corrupted_result=$(check_corrupted_entry_vault ${result} logins)
               if [ ${corrupted_result} -eq 0 ] ; then
@@ -1302,7 +1304,6 @@ function search_entries_vault() {
                 url_decrypt=$(vault_key_decrypt "${url_decrypt}")
                 otp_decrypt=$(cat logins/${result}/otp | tail -1 | cut -d ";" -f 2)
                 otp_decrypt=$(vault_key_decrypt "${otp_decrypt}")
-                echo ""
                 echo "* Name Entry: logins/${result}"
                 echo "* Login: ${username_decrypt}"
                 echo "* Password: ${password_decrypt}"
@@ -1369,6 +1370,8 @@ function search_entries_vault() {
             expr ${search_show_entry} + 1 &> /dev/null
             error=$?
             if [ ${error} -eq 0 ] ; then
+              echo ""
+              echo "# Decrypting Entry Number ${search_show_entry}"
               result=$(cat ${pwsh_vault_cache_bcard} | head -${search_show_entry} 2>/dev/null | tail -1 | cut -d "," -f 1 | cut -d "/" -f 2)
               corrupted_result=$(check_corrupted_entry_vault ${result} bcard)
               if [ ${corrupted_result} -eq 0 ] ; then
@@ -1380,7 +1383,6 @@ function search_entries_vault() {
                 expiry_decrypt=$(vault_key_decrypt "${expiry_decrypt}")
                 cvv_decrypt=$(cat bcard/${result}/cvv | tail -1 | cut -d ";" -f 2)
                 cvv_decrypt=$(vault_key_decrypt "${cvv_decrypt}")
-                echo ""
                 echo "* Name Entry: bcard/${result}"
                 echo "* Owner: ${owner_decrypt}"
                 echo "* Card: ${card_decrypt}"
@@ -1388,7 +1390,6 @@ function search_entries_vault() {
                 echo "* CVV: ${cvv_decrypt}"
                 echo ""
               else
-                echo ""
                 echo "# Entry bcard/${result} CORRUPTED"
                 echo ""
               fi
@@ -1441,6 +1442,8 @@ function search_entries_vault() {
             expr ${search_show_entry} + 1 &> /dev/null
             error=$?
             if [ ${error} -eq 0 ] ; then
+              echo ""
+              echo "# Decrypting Entry Number ${search_show_entry}"
               result=$(cat ${pwsh_vault_cache_bcard} | head -${search_show_entry} 2>/dev/null | tail -1 | cut -d "," -f 1 | cut -d "/" -f 2)
               corrupted_result=$(check_corrupted_entry_vault ${result} bcard)
               if [ ${corrupted_result} -eq 0 ] ; then
@@ -1452,7 +1455,6 @@ function search_entries_vault() {
                 expiry_decrypt=$(vault_key_decrypt "${expiry_decrypt}")
                 cvv_decrypt=$(cat bcard/${result}/cvv | tail -1 | cut -d ";" -f 2)
                 cvv_decrypt=$(vault_key_decrypt "${cvv_decrypt}")
-                echo ""
                 echo "* Name Entry: bcard/${result}"
                 echo "* Owner: ${owner_decrypt}"
                 echo "* Card: ${card_decrypt}"
@@ -1460,7 +1462,6 @@ function search_entries_vault() {
                 echo "* CVV: ${cvv_decrypt}"
                 echo ""
               else
-                echo ""
                 echo "# Entry bcard/${result} CORRUPTED"
                 echo ""
               fi
@@ -1518,18 +1519,18 @@ function search_entries_vault() {
             expr ${search_show_entry} + 1 &> /dev/null
             error=$?
             if [ ${error} -eq 0 ] ; then
+              echo ""
+              echo "# Decrypting Entry Number ${search_show_entry}"
               result=$(cat ${pwsh_vault_cache_notes} | head -${search_show_entry} 2>/dev/null | tail -1 | cut -d "," -f 1 | cut -d "/" -f 2)
               corrupted_result=$(check_corrupted_entry_vault ${result} notes)
               if [ ${corrupted_result} -eq 0 ] ; then
                 note_decrypt=$(cat notes/${result}/note | tail -1 | cut -d ";" -f 2)
                 note_decrypt=$(vault_key_decrypt "${note_decrypt}")
                 note_decrypt=$(restoreSpaces "${note_decrypt}")
-                echo ""
                 echo "* Name Entry: notes/${result}"
                 echo "* Note: ${note_decrypt}"
                 echo ""
               else
-                echo ""
                 echo "# Entry notes/${result} CORRUPTED"
                 echo ""
               fi
@@ -1582,18 +1583,18 @@ function search_entries_vault() {
             expr ${search_show_entry} + 1 &> /dev/null
             error=$?
             if [ ${error} -eq 0 ] ; then
+              echo ""
+              echo "# Decrypting Entry Number ${search_show_entry}"
               result=$(cat ${pwsh_vault_cache_notes} | head -${search_show_entry} 2>/dev/null | tail -1 | cut -d "," -f 1 | cut -d "/" -f 2)
               corrupted_result=$(check_corrupted_entry_vault ${result} notes)
               if [ ${corrupted_result} -eq 0 ] ; then
                 note_decrypt=$(cat notes/${result}/note | tail -1 | cut -d ";" -f 2)
                 note_decrypt=$(vault_key_decrypt "${note_decrypt}")
                 note_decrypt=$(restoreSpaces "${note_decrypt}")
-                echo ""
                 echo "* Name Entry: notes/${result}"
                 echo "* Note: ${note_decrypt}"
                 echo ""
               else
-                echo ""
                 echo "# Entry notes/${result} CORRUPTED"
                 echo ""
               fi
