@@ -43,6 +43,17 @@ function removeSpaces() {
   echo ${wordToConvert}
 }
 
+function removeSpacesURL() {
+  wordToConvert=${1}
+  sedtmpfile="${file_code_sec}"
+  echo "${wordToConvert}" > ${sedtmpfile}
+  # Remove spaces
+  sed -i 's/ /%/g' "${sedtmpfile}" &> /dev/null
+  # Show file without spaces
+  wordToConvert=$(cat ${sedtmpfile})
+  echo ${wordToConvert}
+}
+
 function restoreSpaces() {
   wordToConvert=${1}
   sedtmpfile="${file_code_sec}"
@@ -205,6 +216,7 @@ function create_login_vault_entry() {
   while [ ${username_entry} -eq 0 ] ; do
     echo -n "# Enter Username: " ; read name_username
     if [ ! -z "${name_username}" ] ; then
+      name_username=$(removeSpaces "${name_username}")
       name_username=$(vault_key_encrypt "${name_username}")
       username_text=$(vault_key_encrypt "Username")
       echo "${masterkey_load}" > "${pwsh_vault}/logins/${name_entry}/login"
@@ -216,6 +228,7 @@ function create_login_vault_entry() {
   while [ ${password_entry} -eq 0 ] ; do
     echo -n "# Enter Password: " ; read name_password
     if [ ! -z "${name_password}" ] ; then
+      name_password=$(removeSpaces "${name_password}")
       name_password=$(vault_key_encrypt "${name_password}")
       password_text=$(vault_key_encrypt "Password")
       echo "${masterkey_load}" > "${pwsh_vault}/logins/${name_entry}/password"
@@ -227,6 +240,7 @@ function create_login_vault_entry() {
   while [ ${url_entry} -eq 0 ] ; do
     echo -n "# Enter URL: " ; read name_url
     if [ ! -z "${name_url}" ] ; then
+      name_url=$(removeSpacesURL "${name_url}")
       name_url=$(vault_key_encrypt "${name_url}")
       url_text=$(vault_key_encrypt "URL")
       echo "${masterkey_load}" > "${pwsh_vault}/logins/${name_entry}/url"
@@ -238,6 +252,7 @@ function create_login_vault_entry() {
   while [ ${otp_entry} -eq 0 ] ; do
     echo -n "# Enter OTP (Default: None): " ; read name_otp
     if [ ! -z "${name_otp}" ] ; then
+      name_otp=$(removeSpaces "${name_otp}")
       name_otp=$(vault_key_encrypt "${name_otp}")
       otp_text=$(vault_key_encrypt "OTP")
       echo "${masterkey_load}" > "${pwsh_vault}/logins/${name_entry}/otp"
@@ -300,6 +315,7 @@ function create_bcard_vault_entry() {
   while [ ${card_entry} -eq 0 ] ; do
     echo -n "# Enter Card Number (XXXX-XXXX-XXXX-XXXX): " ; read name_card
     if [ ! -z "${name_card}" ] ; then
+      name_card=$(removeSpaces "${name_card}")
       name_card=$(vault_key_encrypt "${name_card}")
       card_text=$(vault_key_encrypt "Card")
       echo "${masterkey_load}" > "${pwsh_vault}/bcard/${name_entry}/card"
@@ -311,6 +327,7 @@ function create_bcard_vault_entry() {
   while [ ${expiry_entry} -eq 0 ] ; do
     echo -n "# Enter Expiry Date (MM/YY): " ; read name_expiry
     if [ ! -z "${name_expiry}" ] ; then
+      name_expiry=$(removeSpaces "${name_expiry}")
       name_expiry=$(vault_key_encrypt "${name_expiry}")
       expiry_text=$(vault_key_encrypt "Expiry")
       echo "${masterkey_load}" > "${pwsh_vault}/bcard/${name_entry}/expiry"
@@ -322,6 +339,7 @@ function create_bcard_vault_entry() {
   while [ ${cvv_entry} -eq 0 ] ; do
     echo -n "# Enter CVV: " ; read name_cvv
     if [ ! -z "${name_cvv}" ] ; then
+      name_cvv=$(removeSpaces "${name_cvv}")
       name_cvv=$(vault_key_encrypt "${name_cvv}")
       cvv_text=$(vault_key_encrypt "CVV")
       echo "${masterkey_load}" > "${pwsh_vault}/bcard/${name_entry}/cvv"
@@ -856,6 +874,7 @@ function edit_entry_vault() {
         read_userame_dc=$(vault_key_decrypt "${read_username}")
         echo -n "# Enter Username (Default: ${read_userame_dc}): " ; read name_username
         if [ ! -z "${name_username}" ] ; then
+          name_username=$(removeSpaces "${name_username}")
           name_username=$(vault_key_encrypt "${name_username}")
           username_text=$(vault_key_encrypt "Username")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/login"
@@ -867,6 +886,7 @@ function edit_entry_vault() {
         read_password_dc=$(vault_key_decrypt "${read_password}")
         echo -n "# Enter Password (Default: ${read_password_dc}): " ; read name_password
         if [ ! -z "${name_password}" ] ; then
+          name_password=$(removeSpaces "${name_password}")
           name_password=$(vault_key_encrypt "${name_password}")
           password_text=$(vault_key_encrypt "Password")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/password"
@@ -878,6 +898,7 @@ function edit_entry_vault() {
         read_url_dc=$(vault_key_decrypt "${read_url}")
         echo -n "# Enter URL (Default: ${read_url_dc}): " ; read name_url
         if [ ! -z "${name_url}" ] ; then
+          name_url=$(removeSpacesURL "${name_url}")
           name_url=$(vault_key_encrypt "${name_url}")
           url_text=$(vault_key_encrypt "URL")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/url"
@@ -889,6 +910,7 @@ function edit_entry_vault() {
         read_otp_dc=$(vault_key_decrypt "${read_otp}")
         echo -n "# Enter OTP (Default: ${read_otp_dc}): " ; read name_otp
         if [ ! -z "${name_otp}" ] ; then
+          name_otp=$(removeSpaces "${name_otp}")
           name_otp=$(vault_key_encrypt "${name_otp}")
           otp_text=$(vault_key_encrypt "OTP")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/otp"
@@ -913,6 +935,7 @@ function edit_entry_vault() {
         read_card_dc=$(vault_key_decrypt "${read_card}")
         echo -n "# Enter Card Number (Default: ${read_card_dc}): " ; read name_card
         if [ ! -z "${name_card}" ] ; then
+          name_card=$(removeSpaces "${name_card}")
           name_card=$(vault_key_encrypt "${name_card}")
           card_text=$(vault_key_encrypt "Card")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/card"
@@ -924,6 +947,7 @@ function edit_entry_vault() {
         read_expiry_dc=$(vault_key_decrypt "${read_expiry}")
         echo -n "# Enter Expiry Date (Default: ${read_expiry_dc}): " ; read name_expiry
         if [ ! -z "${name_expiry}" ] ; then
+          name_expiry=$(removeSpaces "${name_expiry}")
           name_expiry=$(vault_key_encrypt "${name_expiry}")
           expiry_text=$(vault_key_encrypt "Expiry")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/expiry"
@@ -935,6 +959,7 @@ function edit_entry_vault() {
         read_cvv_dc=$(vault_key_decrypt "${read_cvv}")
         echo -n "# Enter CVV (Default: ${read_cvv_dc}): " ; read name_cvv
         if [ ! -z "${name_cvv}" ] ; then
+          name_cvv=$(removeSpaces "${name_cvv}")
           name_cvv=$(vault_key_encrypt "${name_cvv}")
           cvv_text=$(vault_key_encrypt "cvv")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/cvv"
