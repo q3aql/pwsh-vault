@@ -5,7 +5,7 @@
 # Author: q3aql                                               #
 # Contact: q3aql@duck.com                                     #
 # License: GPL v2.0                                           #
-# Last-Change: 27-06-20222                                    #
+# Last-Change: 30-06-20222                                    #
 # #############################################################
 VERSION="0.1"
 
@@ -60,6 +60,17 @@ function removeSpacesURL() {
   echo "${wordToConvert}" > ${sedtmpfile}
   # Remove spaces
   sed -i 's/ /%/g' "${sedtmpfile}" &> /dev/null
+  # Show file without spaces
+  wordToConvert=$(cat ${sedtmpfile})
+  echo ${wordToConvert}
+}
+
+function spaceForDot() {
+  wordToConvert=${1}
+  sedtmpfile="${file_code_sec}"
+  echo "${wordToConvert}" > ${sedtmpfile}
+  # Remove spaces
+  sed -i 's/ /·/g' "${sedtmpfile}" &> /dev/null
   # Show file without spaces
   wordToConvert=$(cat ${sedtmpfile})
   echo ${wordToConvert}
@@ -251,7 +262,7 @@ function create_login_vault_entry() {
   while [ ${username_entry} -eq 0 ] ; do
     name_username=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --inputbox "# Enter Username:" 0 0)
     if [ ! -z "${name_username}" ] ; then
-      name_username=$(removeSpaces "${name_username}")
+      name_username=$(spaceForDot "${name_username}")
       name_username=$(vault_key_encrypt "${name_username}")
       username_text=$(vault_key_encrypt "Username")
       echo "${masterkey_load}" > "${pwsh_vault}/logins/${name_entry}/login"
@@ -263,7 +274,7 @@ function create_login_vault_entry() {
   while [ ${password_entry} -eq 0 ] ; do
     name_password=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --inputbox "# Enter Password:" 0 0)
     if [ ! -z "${name_password}" ] ; then
-      name_password=$(removeSpaces "${name_password}")
+      name_password=$(spaceForDot "${name_password}")
       name_password=$(vault_key_encrypt "${name_password}")
       password_text=$(vault_key_encrypt "Password")
       echo "${masterkey_load}" > "${pwsh_vault}/logins/${name_entry}/password"
@@ -287,7 +298,7 @@ function create_login_vault_entry() {
   while [ ${otp_entry} -eq 0 ] ; do
     name_otp=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 40)" --inputbox "# Enter OTP (Default: None):" 0 0)
     if [ ! -z "${name_otp}" ] ; then
-      name_otp=$(removeSpaces "${name_otp}")
+      name_otp=$(spaceForDot "${name_otp}")
       name_otp=$(vault_key_encrypt "${name_otp}")
       otp_text=$(vault_key_encrypt "OTP")
       echo "${masterkey_load}" > "${pwsh_vault}/logins/${name_entry}/otp"
@@ -346,7 +357,7 @@ function create_bcard_vault_entry() {
   while [ ${card_entry} -eq 0 ] ; do
     name_card=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 40)" --inputbox "# Enter Card Number (XXXX-XXXX-XXXX-XXXX):" 0 0)
     if [ ! -z "${name_card}" ] ; then
-      name_card=$(removeSpaces "${name_card}")
+      name_card=$(spaceForDot "${name_card}")
       name_card=$(vault_key_encrypt "${name_card}")
       card_text=$(vault_key_encrypt "Card")
       echo "${masterkey_load}" > "${pwsh_vault}/bcard/${name_entry}/card"
@@ -358,7 +369,7 @@ function create_bcard_vault_entry() {
   while [ ${expiry_entry} -eq 0 ] ; do
     name_expiry=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --inputbox "# Enter Expiry Date (MM/YY):" 0 0)
     if [ ! -z "${name_expiry}" ] ; then
-      name_expiry=$(removeSpaces "${name_expiry}")
+      name_expiry=$(spaceForDot "${name_expiry}")
       name_expiry=$(vault_key_encrypt "${name_expiry}")
       expiry_text=$(vault_key_encrypt "Expiry")
       echo "${masterkey_load}" > "${pwsh_vault}/bcard/${name_entry}/expiry"
@@ -370,7 +381,7 @@ function create_bcard_vault_entry() {
   while [ ${cvv_entry} -eq 0 ] ; do
     name_cvv=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --inputbox "# Enter CVV:" 0 0)
     if [ ! -z "${name_cvv}" ] ; then
-      name_cvv=$(removeSpaces "${name_cvv}")
+      name_cvv=$(spaceForDot "${name_cvv}")
       name_cvv=$(vault_key_encrypt "${name_cvv}")
       cvv_text=$(vault_key_encrypt "CVV")
       echo "${masterkey_load}" > "${pwsh_vault}/bcard/${name_entry}/cvv"
@@ -834,7 +845,7 @@ function edit_entry_vault() {
         read_userame_dc=$(vault_key_decrypt "${read_username}")
         name_username=$(dialog --stdout --title "# Selected Entry ${vault_edit_entry} $(generate_spaces 20)" --inputbox "# Enter Username (Default: ${read_userame_dc}):" 0 0)
         if [ ! -z "${name_username}" ] ; then
-          name_username=$(removeSpaces "${name_username}")
+          name_username=$(spaceForDot "${name_username}")
           name_username=$(vault_key_encrypt "${name_username}")
           username_text=$(vault_key_encrypt "Username")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/login"
@@ -846,7 +857,7 @@ function edit_entry_vault() {
         read_password_dc=$(vault_key_decrypt "${read_password}")
         name_password=$(dialog --stdout --title "# Selected Entry ${vault_edit_entry} $(generate_spaces 20)" --inputbox "# Enter Password (Default: ${read_password_dc}):" 0 0)
         if [ ! -z "${name_password}" ] ; then
-          name_password=$(removeSpaces "${name_password}")
+          name_password=$(spaceForDot "${name_password}")
           name_password=$(vault_key_encrypt "${name_password}")
           password_text=$(vault_key_encrypt "Password")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/password"
@@ -870,7 +881,7 @@ function edit_entry_vault() {
         read_otp_dc=$(vault_key_decrypt "${read_otp}")
         name_otp=$(dialog --stdout --title "# Selected Entry ${vault_edit_entry} $(generate_spaces 40)" --inputbox "# Enter OTP (Default: ${read_otp_dc}):" 0 0)
         if [ ! -z "${name_otp}" ] ; then
-          name_otp=$(removeSpaces "${name_otp}")
+          name_otp=$(spaceForDot "${name_otp}")
           name_otp=$(vault_key_encrypt "${name_otp}")
           otp_text=$(vault_key_encrypt "OTP")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/otp"
@@ -895,7 +906,7 @@ function edit_entry_vault() {
         read_card_dc=$(vault_key_decrypt "${read_card}")
         name_card=$(dialog --stdout --title "# Selected Entry ${vault_edit_entry} $(generate_spaces 40)" --inputbox "# Enter Card Number (Default: ${read_card_dc}):" 0 0)
         if [ ! -z "${name_card}" ] ; then
-          name_card=$(removeSpaces "${name_card}")
+          name_card=$(spaceForDot "${name_card}")
           name_card=$(vault_key_encrypt "${name_card}")
           card_text=$(vault_key_encrypt "Card")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/card"
@@ -907,7 +918,7 @@ function edit_entry_vault() {
         read_expiry_dc=$(vault_key_decrypt "${read_expiry}")
         name_expiry=$(dialog --stdout --title "# Selected Entry ${vault_edit_entry} $(generate_spaces 20)" --inputbox "# Enter Expiry Date (Default: ${read_expiry_dc}):" 0 0)
         if [ ! -z "${name_expiry}" ] ; then
-          name_expiry=$(removeSpaces "${name_expiry}")
+          name_expiry=$(spaceForDot "${name_expiry}")
           name_expiry=$(vault_key_encrypt "${name_expiry}")
           expiry_text=$(vault_key_encrypt "Expiry")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/expiry"
@@ -919,7 +930,7 @@ function edit_entry_vault() {
         read_cvv_dc=$(vault_key_decrypt "${read_cvv}")
         name_cvv=$(dialog --stdout --title "# Selected Entry ${vault_edit_entry} $(generate_spaces 20)" --inputbox "# Enter CVV (Default: ${read_cvv_dc}):" 0 0)
         if [ ! -z "${name_cvv}" ] ; then
-          name_cvv=$(removeSpaces "${name_cvv}")
+          name_cvv=$(spaceForDot "${name_cvv}")
           name_cvv=$(vault_key_encrypt "${name_cvv}")
           cvv_text=$(vault_key_encrypt "cvv")
           echo "${masterkey_load}" > "${pwsh_vault}/${vault_edit_entry}/cvv"
