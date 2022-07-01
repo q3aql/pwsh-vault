@@ -282,6 +282,10 @@ function create_login_vault_entry() {
     name_entry=$(echo > /dev/null | pwsh-vaultm -p "爵  Enter Name for Login Entry:")
     if [ ! -z "${name_entry}" ] ; then
       name_entry=$(removeSpaces "${name_entry}")
+      if [ -d "${pwsh_vault}/logins/${name_entry}" ] ; then
+        echo > /dev/null | pwsh-vaultm -p "爵  Vault logins/${name_entry} already exists $(generate_spaces 55)"
+        pwsh_vault_main
+      fi
       mkdir -p "${pwsh_vault}/logins/${name_entry}"
       name_login_entry=1
     fi
@@ -352,6 +356,10 @@ function create_bcard_vault_entry() {
     name_entry=$(echo > /dev/null | pwsh-vaultm -p "  Enter Name for Bcard Entry:")
     if [ ! -z "${name_entry}" ] ; then
       name_entry=$(removeSpaces "${name_entry}")
+      if [ -d "${pwsh_vault}/bcard/${name_entry}" ] ; then
+        echo > /dev/null | pwsh-vaultm -p "  Vault bcard/${name_entry} already exists $(generate_spaces 55)"
+        pwsh_vault_main
+      fi
       mkdir -p "${pwsh_vault}/bcard/${name_entry}"
       name_bcard_entry=1
     fi
@@ -415,6 +423,10 @@ function create_note_vault_entry() {
     name_entry=$(echo > /dev/null | pwsh-vaultm -p "  Enter Name for Note Entry:")
     if [ ! -z "${name_entry}" ] ; then
       name_entry=$(removeSpaces "${name_entry}")
+      if [ -d "${pwsh_vault}/notes/${name_entry}" ] ; then
+        echo > /dev/null | pwsh-vaultm -p "  Vault notes/${name_entry} already exists $(generate_spaces 55)"
+        pwsh_vault_main
+      fi
       mkdir -p "${pwsh_vault}/notes/${name_entry}"
       name_note_entry=1
     fi

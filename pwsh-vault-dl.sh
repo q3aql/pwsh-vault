@@ -254,6 +254,11 @@ function create_login_vault_entry() {
     name_entry=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --inputbox "# Enter Name for Login Entry:" 0 0)
     if [ ! -z "${name_entry}" ] ; then
       name_entry=$(removeSpaces "${name_entry}")
+      if [ -d "${pwsh_vault}/logins/${name_entry}" ] ; then
+        dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+        --msgbox "# Vault logins/${name_entry} already exists\n# You can remove or edit it." 0 0
+        pwsh_vault_main
+      fi
       mkdir -p "${pwsh_vault}/logins/${name_entry}"
       name_login_entry=1
     fi
@@ -337,6 +342,11 @@ function create_bcard_vault_entry() {
     name_entry=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --inputbox "# Enter Name for Bcard Entry:" 0 0)
     if [ ! -z "${name_entry}" ] ; then
       name_entry=$(removeSpaces "${name_entry}")
+      if [ -d "${pwsh_vault}/bcard/${name_entry}" ] ; then
+        dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+        --msgbox "# Vault bcard/${name_entry} already exists\n# You can remove or edit it." 0 0
+        pwsh_vault_main
+      fi
       mkdir -p "${pwsh_vault}/bcard/${name_entry}"
       name_bcard_entry=1
     fi
@@ -412,6 +422,11 @@ function create_note_vault_entry() {
     name_entry=$(dialog --stdout --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" --inputbox "# Enter Name for Note Entry:" 0 0)
     if [ ! -z "${name_entry}" ] ; then
       name_entry=$(removeSpaces "${name_entry}")
+      if [ -d "${pwsh_vault}/notes/${name_entry}" ] ; then
+        dialog --title "# pwsh-vault-dl ${VERSION} $(generate_spaces 20)" \
+        --msgbox "# Vault notes/${name_entry} already exists\n# You can remove or edit it." 0 0
+        pwsh_vault_main
+      fi
       mkdir -p "${pwsh_vault}/notes/${name_entry}"
       name_note_entry=1
     fi
