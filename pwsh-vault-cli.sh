@@ -5,9 +5,9 @@
 # Author: q3aql                                             #
 # Contact: q3aql@duck.com                                   #
 # License: GPL v2.0                                         #
-# Last-Change: 30-06-20222                                  #
+# Last-Change: 01-07-20222                                  #
 # ###########################################################
-VERSION="0.1"
+VERSION="0.2"
 
 # Variables
 pwsh_vault="${HOME}/.pwsh-vault"
