@@ -82,5 +82,6 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
 ### External links:
 
   * [dmenu homepage](https://tools.suckless.org/dmenu/)
+  * [dialog homepage](https://invisible-island.net/dialog/dialog.html#download)
   * [apt-cyg](https://github.com/transcode-open/apt-cyg)
   * [Cygwin](https://www.cygwin.com/)
