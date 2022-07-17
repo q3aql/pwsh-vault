@@ -5,7 +5,7 @@
 # Author: q3aql                                               #
 # Contact: q3aql@duck.com                                     #
 # License: GPL v2.0                                           #
-# Last-Change: 01-07-20222                                    #
+# Last-Change: 17-07-20222                                    #
 # #############################################################
 VERSION="0.2"
 
@@ -156,21 +156,21 @@ function generate_password() {
     else
       default_long_password=${size_pass}
     fi
-    count_char_password=1
-    current_password=""
-    echo ""
-    echo "# Generating Random Password"
-    while [ ${count_char_password} -le ${default_long_password} ] ; do
-      current_char=$(generate_codes "password")
-      current_password="${current_password}${current_char}"
-      count_char_password=$(expr ${count_char_password} + 1)
-    done
-    echo ""
-    echo "# PASSWORD: ${current_password}"
-    echo ""
-    if [ "${2}" != "param" ] ; then
-      echo -n "# Press enter key to continue " ; read enter_continue
-    fi
+  fi
+  count_char_password=1
+  current_password=""
+  echo ""
+  echo "# Generating Random Password"
+  while [ ${count_char_password} -le ${default_long_password} ] ; do
+    current_char=$(generate_codes "password")
+    current_password="${current_password}${current_char}"
+    count_char_password=$(expr ${count_char_password} + 1)
+  done
+  echo ""
+  echo "# PASSWORD: ${current_password}"
+  echo ""
+  if [ "${2}" != "param" ] ; then
+    echo -n "# Press enter key to continue " ; read enter_continue
   fi
 }
 
@@ -191,15 +191,15 @@ function gen_password_dl() {
     else
       default_long_password=${size_pass}
     fi
-    count_char_password=1
-    current_password=""
-    while [ ${count_char_password} -le ${default_long_password} ] ; do
-      current_char=$(generate_codes "password")
-      current_password="${current_password}${current_char}"
-      count_char_password=$(expr ${count_char_password} + 1)
-    done
-    echo "${current_password}"
   fi
+  count_char_password=1
+  current_password=""
+  while [ ${count_char_password} -le ${default_long_password} ] ; do
+    current_char=$(generate_codes "password")
+    current_password="${current_password}${current_char}"
+    count_char_password=$(expr ${count_char_password} + 1)
+  done
+  echo "${current_password}"
 }
 
 function generate_password_menu() {
