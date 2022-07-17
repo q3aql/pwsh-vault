@@ -13,9 +13,9 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
   * **Debian/Ubuntu:**
     
     ```shell
-    $ sudo apt install git gcc make coreutils sed zip unzip dialog libexpat1-dev libfreetype-dev \
-      libxinerama-dev x11-utils libxft-dev libfreetype6-dev libfontconfig1-dev libpng-dev libmd-dev \
-      libbrotli-dev libxrender-dev libxau-dev libbsd-dev libxdmcp-dev
+    $ sudo apt install git gcc make coreutils sed zip unzip dialog libexpat1-dev libmd-dev \
+      libfreetype-dev libxinerama-dev x11-utils libxft-dev libfreetype6-dev libxau-dev \
+      libfontconfig1-dev libpng-dev libbrotli-dev libxrender-dev libbsd-dev libxdmcp-dev
     ````
 
   * **Windows Cygwin ([apt-cyg](https://github.com/transcode-open/apt-cyg)):**
