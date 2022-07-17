@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=pwsh-vault
-GenericName=pwsh-vault
+Name=Pwsh Vault Password Manager
+GenericName=Pwsh Vault Password Manager
 Comment=Basic Password Manager written in Bash+Dmenu
 Comment[es]=Gestor de claves basico escrito en Bash+Dmenu
 Exec=/usr/bin/pwsh-vault
