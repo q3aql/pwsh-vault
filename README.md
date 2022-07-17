@@ -4,16 +4,31 @@ pwsh-vault - Basic Password Manager written in Bash+Dmenu
 ### Dependencies:
   
   * **Arch Linux:**
-    * `sudo pacman -S git gcc make coreutils sed expat zip unzip dialog freetype2 libxinerama brotli fontconfig libbsd libmd libpng libx11 libxau libxdmcp libxft libxrender` 
+    
+    ```shell
+    $ sudo pacman -S git gcc make coreutils sed expat zip unzip dialog freetype2 libxinerama \
+      brotli fontconfig libbsd libmd libpng libx11 libxau libxdmcp libxft libxrender
+    ```` 
 
   * **Debian/Ubuntu:**
-    * `sudo apt install git gcc make coreutils sed zip unzip dialog libexpat1-dev libfreetype-dev libxinerama-dev x11-utils libxft-dev libfreetype6-dev libfontconfig1-dev libpng-dev libbrotli-dev libxrender-dev libmd-dev libxau-dev libbsd-dev libxdmcp-dev`
+    
+    ```shell
+    $ sudo apt install git gcc make coreutils sed zip unzip dialog libexpat1-dev libfreetype-dev \
+      libxinerama-dev x11-utils libxft-dev libfreetype6-dev libfontconfig1-dev libpng-dev libmd-dev \
+      libbrotli-dev libxrender-dev libxau-dev libbsd-dev libxdmcp-dev
+    ````
 
   * **Windows Cygwin ([apt-cyg](https://github.com/transcode-open/apt-cyg)):**
-    * `apt-cyg install git make coreutils sed zip unzip dialog`
+    
+    ```shell
+    $ apt-cyg install git make coreutils sed zip unzip dialog
+    ````
     
   * **Android ([Termux](https://termux.com/)):**
-    * `pkg install git make coreutils sed zip unzip dialog`
+    
+    ```shell
+    $ pkg install git make coreutils sed zip unzip dialog
+    ````
 
 ### Build and install (Unix/Linux Posix):
 
